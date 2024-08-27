@@ -1,21 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+</head>
+<body>
+    <h1>User Registration</h1>
+    <form id="userForm">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
 
-        <title>Recipe Book</title>
-        <link rel="stylesheet" href="index.css">
-    </head>
-    <body>
-        <header>
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
 
-        </header>
-        <main>
-            
-        </main>
-        <footer>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
 
-        </footer>
-    </body>
+        <button type="submit">Register</button>
+    </form>
+
+    <p id="responseMessage"></p>
+
+    <script>
+        document.getElementById('userForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Collect form data
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Send POST request to the API
+            try {
+                const response = await fetch('/api/user_post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email, password })
+                });
+
+                const result = await response.json();
+
+                // Handle the response
+                if (response.ok) {
+                    document.getElementById('responseMessage').textContent = result.message;
+                    document.getElementById('userForm').reset(); // Clear the form
+                } else {
+                    document.getElementById('responseMessage').textContent = `Error: ${result.message}`;
+                }
+            } catch (error) {
+                document.getElementById('responseMessage').textContent = `Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
 </html>
