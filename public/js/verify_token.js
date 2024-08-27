@@ -21,6 +21,9 @@ window.onload = function() {
                 localStorage.removeItem('token'); 
                 window.location.href = './login.html'; 
             }
+            else {
+                document.getElementById("user_greeting").textContent = `Welcome, ${data.decoded.username}`; 
+            }
         })
         .catch(error => {
             console.error("Error verifying token: ", error); 
