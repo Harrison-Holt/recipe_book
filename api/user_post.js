@@ -29,6 +29,12 @@ export default async function handler(req, res) {
             [username, hashedPassword, email]
         );
 
+        if (result.affectedRows === 1) {
+            const token = jwt.sign({ userId: result.insertId, username, email }, process.env.JWT_SECRET, {
+                expiresIn: '1h',
+            });
+        }
+
         res.status(201).json({ message: 'User created successfully', userId: result.insertId });
     } catch (error) {
         console.error('Error occurred during request processing:', error.message, error.stack);
