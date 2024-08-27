@@ -24,36 +24,42 @@
 
     <script>
         document.getElementById('userForm').addEventListener('submit', async function(event) {
-            event.preventDefault(); // Prevent the default form submission
+    event.preventDefault(); // Prevent the default form submission
 
-            // Collect form data
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+    // Collect form data
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-            // Send POST request to the API
-            try {
-                const response = await fetch('/api/user_post', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ name, email, password })
-                });
-
-                const result = await response.json();
-
-                // Handle the response
-                if (response.ok) {
-                    document.getElementById('responseMessage').textContent = result.message;
-                    document.getElementById('userForm').reset(); // Clear the form
-                } else {
-                    document.getElementById('responseMessage').textContent = `Error: ${result.message}`;
-                }
-            } catch (error) {
-                document.getElementById('responseMessage').textContent = `Error: ${error.message}`;
-            }
+    // Send POST request to the API
+    try {
+        const response = await fetch('/api/user_post', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, email, password })
         });
+
+        // Check if the response is JSON
+        const contentType = response.headers.get('Content-Type');
+        if (contentType && contentType.includes('application/json')) {
+            const result = await response.json();
+            
+            if (response.ok) {
+                document.getElementById('responseMessage').textContent = result.message;
+                document.getElementById('userForm').reset(); // Clear the form
+            } else {
+                document.getElementById('responseMessage').textContent = `Error: ${result.message}`;
+            }
+        } else {
+            const text = await response.text(); // Get response text for non-JSON responses
+            document.getElementById('responseMessage').textContent = `Unexpected response: ${text}`;
+        }
+    } catch (error) {
+        document.getElementById('responseMessage').textContent = `Error: ${error.message}`;
+    }
+});
     </script>
 </body>
 </html>

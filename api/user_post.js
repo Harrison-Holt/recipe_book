@@ -16,18 +16,19 @@ export default async function handler(req, res) {
     }
 
     try {
-        const hashed_password = await bcrypt.hash(password, 10); 
-
-        const db = await connect_database(); 
-
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const db = await connect_database();
+    
         const [result] = await db.execute(
-            'INSERT INTO users (name, password, email) VALUES (?, ?, ?)', 
-            [name, hashed_password, email]
-        ); 
-
-        res.status[201].json({ message: 'User created successfully', userId: result.insertId}); 
-    } catch(error) {
-        console.error('Error insertinmg user data: ', error); 
-        res.status[500].json({ message: 'Internal Server Error'}); 
+            'INSERT INTO users (name, password, email) VALUES (?, ?, ?)',
+            [name, hashedPassword, email]
+        );
+    
+        res.status(201).json({ message: 'User created successfully', userId: result.insertId });
+    } catch (error) {
+        console.error('Error inserting user data: ', error);
+    
+        // Return the error as JSON
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
-}
+}    
