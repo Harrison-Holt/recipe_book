@@ -51,12 +51,12 @@ main {
     transform: scale(1.05);
 }
 
-#explore_recipe_section {
+.explore_recipe_section {
     background-image: url('../images/current_reciepes_background.jpg');
     background-size: cover;
 }
 
-#create_recipe_section {
+.create_recipe_section {
     background-image: url('../images/my_recipes_background.jpg');
     background-size: cover;
 }
