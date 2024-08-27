@@ -30,7 +30,8 @@ footer p {
 
 /* Main Styles */ 
 main {
-    background-color: #fff;
+    background-image: url("../images/kitchen_background.jpg");
+    background-size: cover;
 }
 
 
@@ -53,7 +54,7 @@ input {
     margin-bottom: 15px;
 }
 
-#register_submit_button {
+#login_submit_button {
     border: none; 
     cursor: pointer;
     border-radius: 70%;
@@ -64,7 +65,7 @@ input {
     transition: transform 0.3s ease;
 }
 
-#register_submit_button:hover {
+#login_submit_button:hover {
     background-color: #496C74;
     transform: scale(1.05);
 }
