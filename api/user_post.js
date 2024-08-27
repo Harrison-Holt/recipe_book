@@ -7,10 +7,10 @@ export default async function handler(req, res) {
         return;
     }
 
-    const { name, password, email } = req.body;
+    const { username, password, email } = req.body;
 
-    if (!name || !password || !email) {
-        res.status(400).json({ message: 'Name, password, and email are required!' });
+    if (!username || !password || !email) {
+        res.status(400).json({ message: 'username, password, and email are required!' });
         return;
     }
 
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
 
         const [result] = await connection.execute(
             'INSERT INTO user (username, password, email) VALUES (?, ?, ?)',
-            [name, hashedPassword, email]
+            [username, hashedPassword, email]
         );
 
         res.status(201).json({ message: 'User created successfully', userId: result.insertId });
