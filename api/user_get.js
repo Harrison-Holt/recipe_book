@@ -1,5 +1,6 @@
 import connect_database from '../config/db.js';
 import bcrypt from 'bcryptjs'; 
+import jwt from 'jsonwebtoken'; 
 
 export default async function handler(req, res) {
     if (req.method !== 'GET') {
@@ -43,8 +44,10 @@ export default async function handler(req, res) {
             const is_match = await bcrypt.compare(password, user.password)
 
             if(is_match) {
-                
-                res.status(200).json({ message: 'Login Successful!' })
+                const token = jwt.sign({username_or_email}, process.env.JWT_SECRET, {
+                    expiresIn: '1h'
+                }); 
+                res.status(200).json({ message: 'Login Successful!', token})
             } else {
 
                 res.status(401).json({ message: 'Invalid username/email and/or password!'}); 

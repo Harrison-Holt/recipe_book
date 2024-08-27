@@ -12,6 +12,8 @@
   "description": "",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "express-session": "^1.18.0",
+    "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.0"
   }
 }

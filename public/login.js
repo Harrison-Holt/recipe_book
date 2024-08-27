@@ -13,7 +13,16 @@ document.getElementById("login_submit_button").addEventListener('click', async f
         }); 
 
         if(response.ok) {
-            window.location.href = './index.html'; 
+            const data = await response.json();
+
+            if(data.token) {
+
+                localStorage.setItem('token', data.token); 
+                window.location.href = './index.html'; 
+            } else {
+                console.error("Login failed: token not recived.")
+                alert("Login failed! Try again!"); 
+            }
         } else {
             const error = await response.json(); 
             console.error("Error: ", error); 
