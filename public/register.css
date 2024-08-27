@@ -1,0 +1,70 @@
+/* Gobal Styles */ 
+body {
+    margin: 0; 
+    padding: 0; 
+}
+
+/* Header Styles */
+header {
+    background-color: #5A818A;
+    width: 100%; 
+    margin-bottom: 2px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8); 
+}
+
+header h1 {
+    font-family: 'Raleway'; 
+    color: #fff; 
+    margin: 5px; 
+}
+
+/* Footer Styles */ 
+footer {
+    background-color: #5A818A;
+    color: #fff; 
+}
+
+footer p {
+    margin: 10px; 
+}
+
+/* Main Styles */ 
+main {
+    background-color: #fff;
+}
+
+
+/* Form Styles */ 
+form {
+    margin-top: 75px; 
+    padding: 50px; 
+    height: 75vh;
+    border-radius: 20%;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8); 
+    background-color: #fff;
+}
+
+label {
+    margin-top: 25px;
+    font-family: 'Lato';
+}
+
+input {
+    margin-bottom: 15px;
+}
+
+#register_submit_button {
+    border: none; 
+    cursor: pointer;
+    border-radius: 70%;
+    background-color: #5A818A;
+    color: #fff;
+    padding: 15px; 
+    transition: background-color 0.3s ease;
+    transition: transform 0.3s ease;
+}
+
+#register_submit_button:hover {
+    background-color: #496C74;
+    transform: scale(1.05);
+}
