@@ -39,7 +39,6 @@ main {
 #logout {
     border: none; 
     cursor: pointer;
-    border-radius: 70%;
     background-color: #5A818A;
     color: #fff;
     padding: 15px; 
