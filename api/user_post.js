@@ -1,46 +1,33 @@
-import connect_database from '../config/db.js';
-import bcrypt from 'bcryptjs';
+import connect_database from "../config/db";
+import bcrypt from 'bcryptjs'; 
 
-export default async function handler(req, res) {
-    console.log("Request received:", req.method, req.body);
+export default async function post_handler(req, res) {
 
-    if (req.method !== 'POST') {
-        console.log("Invalid method:", req.method);
-        res.status(405).json({ message: 'Only POST requests are allowed' });
-        return;
+    if(req.method !== 'POST') {
+        res.status(405).json({ message: 'Only POST request are allowed!'}); 
+        return; 
     }
 
-    const { name, password, email } = req.body;
+    const { name, password, email } = req.body; 
 
     if (!name || !password || !email) {
-        console.log("Missing fields:", { name, password, email });
-        res.status(400).json({ message: 'Name, password, and email are required!' });
-        return;
+        res.status(400).json({ message: 'Name, password, email are required!'}); 
+        return; 
     }
-
     try {
-        console.log("Attempting to connect to the database...");
-        const { connection, connected, error } = await connect_database();
+        const hashed_password = await bcrypt.hash(password, 10); 
 
-        if (!connected) {
-            console.log("Database connection failed:", error);
-            res.status(500).json({ message: 'Database connection failed', error });
-            return;
-        }
+        const db = await connect_database(); 
 
-        console.log("Connected to the database. Hashing password...");
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const [result] = await db.execute(
+            'INSERT INTO user (username, password, email) VALUES (?, ?, ?)', 
+            [name, hashed_password, email]
+        ); 
 
-        console.log("Executing SQL query...");
-        const [result] = await connection.execute(
-            'INSERT INTO user (username, password, email) VALUES (?, ?, ?)',
-            [name, hashedPassword, email]
-        );
+        res.status(201).json({ message: 'User created successfully!'}); 
 
-        console.log("SQL query executed successfully. Inserting user ID:", result.insertId);
-        res.status(201).json({ message: 'User created successfully', userId: result.insertId });
-    } catch (error) {
-        console.error('Error occurred during request processing:', error.message, error.stack);
-        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    } catch(error) {
+        console.error("Error inserting data: ", error); 
+        res.status(500).json({ message: 'Internal Server Error!'}); 
     }
 }
