@@ -51,12 +51,71 @@ main {
     transform: scale(1.05);
 }
 
+.call_to_action_section {
+    margin-top: 100px;
+}
 .explore_recipe_section {
     background-image: url('../images/current_reciepes_background.jpg');
     background-size: cover;
+    background-position: center;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8); 
+    margin: 25px; 
+    color: #000; 
+    height: 400px;
+    width: 400px;
+    padding-top: 25px;
+    align-items: center;
 }
 
+.explore_recipe_section h3 {
+    margin-left: 25px; 
+    margin-right: 25px;
+}
+
+.explore_recipe_section button {
+    margin-top: 15px;
+    width: 50%; 
+    border: none; 
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 100%;
+    background-color: #fff;
+}
+
+
+.explore_recipe_section button:hover {
+    background-color: #F0F0F0;
+    transform: scale(1.05);
+}
+
+.create_recipe_section h3 {
+    margin-left: 25px; 
+    margin-right: 25px;
+}
+
+.create_recipe_section button {
+    margin-top: 15px;
+    width: 50%; 
+    border: none; 
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 100%;
+    background-color: #fff;
+}
+
+.create_recipe_section button:hover {
+    background-color: #F0F0F0;
+    transform: scale(1.05);
+}
 .create_recipe_section {
     background-image: url('../images/my_recipes_background.jpg');
     background-size: cover;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8); 
+    margin: 25px; 
+    color: #000; 
+    height: 400px;
+    width: 400px;
+    padding-top: 25px;
+    text-align: right;
+    align-items: center;
 }
