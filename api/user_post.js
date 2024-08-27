@@ -33,7 +33,7 @@ export default async function handler(req, res) {
 
         console.log("Executing SQL query...");
         const [result] = await connection.execute(
-            'INSERT INTO users (name, password, email) VALUES (?, ?, ?)',
+            'INSERT INTO user (name, password, email) VALUES (?, ?, ?)',
             [name, hashedPassword, email]
         );
 
