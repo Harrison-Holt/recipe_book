@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>FlavorCarft</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="./css/settings.css">
+    </head>
+    <header class="d-flex flex-row justify-content-between">
+        <h1>FlavorCarft</h1>
+        <button id="logout">Logout</button>
+    </header>
+    <main class="d-flex flex-column min-vh-100 align-items-center">
+
+        <div class="container-fluid p-0">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs justify-content-center w-100" id="settingsTabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="account-settings-tab" data-bs-toggle="tab" data-bs-target="#account-settings" type="button" role="tab" aria-controls="account-settings" aria-selected="true">Account Settings</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="personalization-tab" data-bs-toggle="tab" data-bs-target="#personalization" type="button" role="tab" aria-controls="personalization" aria-selected="false">Personalization</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="recipe-settings-tab" data-bs-toggle="tab" data-bs-target="#recipe-settings" type="button" role="tab" aria-controls="recipe-settings" aria-selected="false">Recipe Settings</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="notifications-tab" data-bs-toggle="tab" data-bs-target="#notifications" type="button" role="tab" aria-controls="notifications" aria-selected="false">Notifications</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="privacy-tab" data-bs-toggle="tab" data-bs-target="#privacy" type="button" role="tab" aria-controls="privacy" aria-selected="false">Privacy</button>
+              </li>
+            </ul>
+          
+            <!-- Tab content -->
+            <div class="tab-content min-vh-100" id="settingsTabContent">
+              <div class="tab-pane fade show active p-3" id="account-settings" role="tabpanel" aria-labelledby="account-settings-tab">
+                <!-- Account Settings Content -->
+                <p>Manage your account details here.</p>
+              </div>
+              <div class="tab-pane fade p-3" id="personalization" role="tabpanel" aria-labelledby="personalization-tab">
+                <!-- Personalization Content -->
+                <p>Adjust your personalization settings.</p>
+              </div>
+              <div class="tab-pane fade p-3" id="recipe-settings" role="tabpanel" aria-labelledby="recipe-settings-tab">
+                <!-- Recipe Settings Content -->
+                <p>Customize your recipe preferences.</p>
+              </div>
+              <div class="tab-pane fade p-3" id="notifications" role="tabpanel" aria-labelledby="notifications-tab">
+                <!-- Notifications Content -->
+                <p>Set your notification preferences.</p>
+              </div>
+              <div class="tab-pane fade p-3" id="privacy" role="tabpanel" aria-labelledby="privacy-tab">
+                <!-- Privacy Content -->
+                <p>Adjust your privacy settings.</p>
+              </div>
+            </div>
+          </div>
+          
+    </main>
+    <footer class="d-flex flex-row justify-content-between">
+        <p>&copy; 2024 FlavorCarft</p>
+        <button id="homepage">Homepage</button>
+    </footer>
+
+    <script src="./js/settings.js"></script>
+    <script src="./js/verify_token.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

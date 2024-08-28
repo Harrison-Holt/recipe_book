@@ -1,7 +1,8 @@
 /* Gobal Styles */ 
 body {
     margin: 0; 
-    padding: 0; 
+    padding: 0;
+    overflow-x: hidden; 
 }
 
 /* Header Styles */
@@ -26,11 +27,12 @@ footer {
 
 footer p {
     margin: 10px; 
+    font-size: 24px;
 }
 
 /* Main Styles */ 
 main {
-    background-image: url("../images/kitchen_background.jpg");
+    background-image: url("../images/kitchen_background_empty.jpg");
     background-size: cover;
 }
 
@@ -40,17 +42,18 @@ main {
 
 
 /* Form Styles */ 
-#logout {
+#logout, #settings {
     border: none; 
     cursor: pointer;
     background-color: #5A818A;
     color: #fff;
-    padding: 15px; 
+    padding: 10px; 
     transition: background-color 0.3s ease;
     transition: transform 0.3s ease;
+    font-size: 24px;
 }
 
-#logout:hover {
+#logout:hover, #settings:hover {
     background-color: #496C74;
     transform: scale(1.05);
 }
