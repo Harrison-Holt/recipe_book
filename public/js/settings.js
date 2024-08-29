@@ -13,28 +13,30 @@ document.addEventListener('DOMContentLoaded', function () {
                 const token = localStorage.getItem('token');
 
                 // Send a request to delete the account
-                fetch('/api/delete_account', {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert("Your account has been successfully deleted.");
-                        localStorage.removeItem('token');
-                        window.location.href = './login.html'; // Redirect to login page
-                    } else {
-                        alert("An error occurred: " + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while deleting your account. Please try again later.');
-                });
-            }
-        });
+                console.log('Token:', token); // Log token to ensure it's being retrieved correctly
+
+fetch('/api/delete_account', {
+    method: 'DELETE',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
     }
+})
+.then(response => response.json())
+.then(data => {
+    console.log('Response data:', data); // Log response data for debugging
+    if (data.success) {
+        alert("Your account has been successfully deleted.");
+        localStorage.removeItem('token');
+        window.location.href = './login.html'; // Redirect to login page
+    } else {
+        alert("An error occurred: " + data.message);
+    }
+})
+.catch(error => {
+    console.error('Error:', error);
+    alert('An error occurred while deleting your account. Please try again later.');
 });
+            }
+        }); 
+    }}); 
