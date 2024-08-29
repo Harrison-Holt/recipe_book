@@ -6,7 +6,7 @@ document.getElementById("register_submit_button").addEventListener('click', asyn
     let email = document.getElementById("email").value; 
 
     try {
-        const response = await fetch('/api/user_post', {
+        const response = await fetch('/api/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

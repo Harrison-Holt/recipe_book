@@ -5,7 +5,7 @@ document.getElementById("login_submit_button").addEventListener('click', async f
     let password = document.getElementById("password").value; 
 
     try {
-        const response = await fetch(`/api/user_get?username_or_email=${encodeURIComponent(username_or_email)}&password=${encodeURIComponent(password)}`, {
+        const response = await fetch(`/api/login?username_or_email=${encodeURIComponent(username_or_email)}&password=${encodeURIComponent(password)}`, {
             method: 'GET', 
             headers: {
                 'Content-Type': 'application/json'
