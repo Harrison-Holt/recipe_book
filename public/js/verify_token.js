@@ -24,7 +24,10 @@ function verifyToken() {
             window.location.href = './login.html';
         } else {
             console.log("Token verified successfully.");
-            document.getElementById("user_greeting").textContent = `Welcome, ${data.decoded.username}`;
+            const userGreeting = document.getElementById("greeting");
+            if (userGreeting) {
+                userGreeting.textContent = `Welcome, ${data.decoded.username}`;
+            }
         }
     })
     .catch(error => {
@@ -33,14 +36,3 @@ function verifyToken() {
         window.location.href = './login.html';
     });
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-    verifyToken();
-    const logoutButton = document.getElementById("logout");
-    if (logoutButton) {
-        logoutButton.addEventListener('click', function() {
-            localStorage.removeItem('token');
-            window.location.href = './login.html';
-        });
-    }
-});
