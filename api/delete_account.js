@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import connect_database from '../config/db';
 
 export default async function handler(req, res) {
     if (req.method !== 'DELETE') {
@@ -21,7 +22,7 @@ export default async function handler(req, res) {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const id = decoded.id;
 
-        const db = await connectToDatabase();
+        const db = await connect_database();
 
         const [results] = await db.query('DELETE FROM user WHERE id = ?', [id]);
 
