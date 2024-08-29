@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import connect_database from '../config/db';
+import connect_database from '../config/db.js';
 
 export default async function handler(req, res) {
     if (req.method !== 'DELETE') {
