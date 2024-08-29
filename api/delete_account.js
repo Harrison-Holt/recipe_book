@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const userId = decoded.userId;
+        const id = decoded.userId;
 
         const db = await connectToDatabase();
 
