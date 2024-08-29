@@ -4,7 +4,7 @@ document.getElementById("homepage").addEventListener('click', function() {
 }); 
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Attach event listener to the delete account button
+
     const deleteAccountButton = document.getElementById('deleteAccount');
     if (deleteAccountButton) {
         deleteAccountButton.addEventListener('click', function () {
@@ -15,28 +15,36 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Send a request to delete the account
                 console.log('Token:', token); // Log token to ensure it's being retrieved correctly
 
-fetch('/api/delete_account', {
-    method: 'DELETE',
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-    }
-})
-.then(response => response.json())
-.then(data => {
-    console.log('Response data:', data); // Log response data for debugging
-    if (data.success) {
-        alert("Your account has been successfully deleted.");
-        localStorage.removeItem('token');
-        window.location.href = './login.html'; // Redirect to login page
-    } else {
-        alert("An error occurred: " + data.message);
-    }
-})
-.catch(error => {
-    console.error('Error:', error);
-    alert('An error occurred while deleting your account. Please try again later.');
-});
+                fetch('/api/delete_account', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then(response => {
+                    // Check if the response is in JSON format
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        return response.text().then(text => {
+                            throw new Error(text);
+                        });
+                    }
+                })
+                .then(data => {
+                    if (data.success) {
+                        alert("Your account has been successfully deleted.");
+                        localStorage.removeItem('token');
+                        window.location.href = './login.html'; // Redirect to login page
+                    } else {
+                        alert("An error occurred: " + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error.message); // Log the full error message
+                    alert('An error occurred: ' + error.message);
+                });
             }
         }); 
     }}); 
