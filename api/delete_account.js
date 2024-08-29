@@ -23,7 +23,7 @@ export default async function handler(req, res) {
 
         const db = await connectToDatabase();
 
-        const [results] = await db.query('DELETE FROM users WHERE id = ?', [userId]);
+        const [results] = await db.query('DELETE FROM user WHERE id = ?', [id]);
 
         await db.end(); 
 
