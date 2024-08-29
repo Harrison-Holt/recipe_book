@@ -22,11 +22,17 @@ export default async function handler(req, res) {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const id = decoded.id;
 
-        const db = await connect_database();
+        if (!connected) {
+            console.error('Database connection error:', error);
+            return res.status(500).json({ success: false, message: 'Database connection failed', error });
+        }
 
-        const [results] = await db.query('DELETE FROM user WHERE id = ?', [id]);
+        // Execute the delete query
+        const [results] = await connection.query('DELETE FROM user WHERE id = ?', [id]);
 
-        await db.end(); 
+        // Close the database connection
+        await connection.end(); 
+
 
         if (results.affectedRows === 0) {
             return res.status(404).json({ success: false, message: 'User not found' });
