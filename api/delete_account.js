@@ -22,6 +22,10 @@ export default async function handler(req, res) {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const id = decoded.id;
 
+        // Correctly destructuring the returned object from connect_database
+        const { connection, connected, error } = await connect_database();
+
+        // Check if the database connection was successful
         if (!connected) {
             console.error('Database connection error:', error);
             return res.status(500).json({ success: false, message: 'Database connection failed', error });
@@ -32,7 +36,6 @@ export default async function handler(req, res) {
 
         // Close the database connection
         await connection.end(); 
-
 
         if (results.affectedRows === 0) {
             return res.status(404).json({ success: false, message: 'User not found' });
