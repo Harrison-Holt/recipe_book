@@ -9,6 +9,20 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentRecipeId = null;
     const API_KEY = '900db7acc0df4aef8b9679a2a001becf';
 
+    // Fetch the userId (username) from the JWT token or local storage
+    const token = localStorage.getItem('token');
+    let userId = null;
+
+    // Decode the token to extract the username (userId)
+    if (token) {
+        try {
+            const decodedToken = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
+            userId = decodedToken.username; // Assuming the username is stored in the token payload
+        } catch (error) {
+            console.error('Error decoding token:', error);
+        }
+    }
+
     // Fetch recipes from Spoonacular
     function fetchRecipes() {
         fetch(`https://api.spoonacular.com/recipes/random?number=30&apiKey=${API_KEY}`)
@@ -53,38 +67,46 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error fetching recipe details:', error));
     }
 
+    // Add recipe to user's collection
     addToMyRecipesBtn.addEventListener('click', function () {
-        // Ensure currentRecipeId is set
-        if (!currentRecipeId) {
-            alert('No recipe selected.');
+        if (!currentRecipeId || !userId) {
+            alert('Error: Missing recipe selection or user information.');
             return;
         }
-    
+
+        // Fetch full details of the recipe to include necessary fields
         fetch(`https://api.spoonacular.com/recipes/${currentRecipeId}/information?apiKey=${API_KEY}`)
             .then(response => response.json())
             .then(recipeData => {
-                // Extract necessary fields from Spoonacular API response
                 const recipePayload = {
-                    userId: localStorage.getItem('userId'), // Ensure this is set correctly
-                    title: recipeData.title,
-                    image_url: recipeData.image || null, // Set to null if no image
+                    userId: userId, // Use the username as userId
+                    title: recipeData.title || '',
+                    image_url: recipeData.image || null,
                     description: recipeData.summary || '',
-                    ingredients: recipeData.extendedIngredients.map(ing => ing.original), // Convert ingredients to a list
+                    ingredients: recipeData.extendedIngredients.map(ing => ing.original),
                     instructions: recipeData.instructions || '',
                     source_id: recipeData.id,
-                    is_user_created: false // Set to false as it's coming from Spoonacular
+                    is_user_created: false
                 };
-    
-                // Send the payload to your backend API
+
+                // Log payload for debugging
+                console.log('Payload being sent:', recipePayload);
+
                 fetch('/api/add_recipe', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify(recipePayload)
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        response.json().then(errorData => console.error('Error details:', errorData));
+                        throw new Error('Failed to add recipe: ' + response.status);
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.success) {
                         alert('Recipe added to your collection!');
@@ -97,7 +119,6 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => console.error('Error fetching recipe details:', error));
     });
-    
 
     // Attach event listeners to view details buttons
     function attachEventListeners() {
@@ -114,6 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize
     fetchRecipes();
 });
+
 
 document.getElementById("homepage").addEventListener('click', function() {
     window.location.href = './index.html'; 
