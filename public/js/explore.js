@@ -53,27 +53,51 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error fetching recipe details:', error));
     }
 
-    // Add recipe to user's collection
     addToMyRecipesBtn.addEventListener('click', function () {
-        fetch('/api/add_recipe', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            },
-            body: JSON.stringify({ recipeId: currentRecipeId })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Recipe added to your collection!');
-                recipeModal.hide();
-            } else {
-                alert('Failed to add recipe: ' + data.message);
-            }
-        })
-        .catch(error => console.error('Error adding recipe:', error));
+        // Ensure currentRecipeId is set
+        if (!currentRecipeId) {
+            alert('No recipe selected.');
+            return;
+        }
+    
+        fetch(`https://api.spoonacular.com/recipes/${currentRecipeId}/information?apiKey=${API_KEY}`)
+            .then(response => response.json())
+            .then(recipeData => {
+                // Extract necessary fields from Spoonacular API response
+                const recipePayload = {
+                    userId: localStorage.getItem('userId'), // Ensure this is set correctly
+                    title: recipeData.title,
+                    image_url: recipeData.image || null, // Set to null if no image
+                    description: recipeData.summary || '',
+                    ingredients: recipeData.extendedIngredients.map(ing => ing.original), // Convert ingredients to a list
+                    instructions: recipeData.instructions || '',
+                    source_id: recipeData.id,
+                    is_user_created: false // Set to false as it's coming from Spoonacular
+                };
+    
+                // Send the payload to your backend API
+                fetch('/api/add_recipe', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify(recipePayload)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Recipe added to your collection!');
+                        recipeModal.hide();
+                    } else {
+                        alert('Failed to add recipe: ' + data.message);
+                    }
+                })
+                .catch(error => console.error('Error adding recipe:', error));
+            })
+            .catch(error => console.error('Error fetching recipe details:', error));
     });
+    
 
     // Attach event listeners to view details buttons
     function attachEventListeners() {

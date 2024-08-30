@@ -1,6 +1,4 @@
-import connect_database from '../config/db.js';
-
-// Add Recipe API
+// Backend handler function
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ success: false, message: 'Method not allowed' });
@@ -21,7 +19,6 @@ export default async function handler(req, res) {
             return res.status(500).json({ success: false, message: 'Database connection failed', error });
         }
 
-        // Construct the SQL query dynamically based on whether image_url is provided
         const query = `INSERT INTO recipes (user_id, title, ${image_url ? 'image_url,' : ''} description, ingredients, instructions, source_id, is_user_created) 
                        VALUES (?, ?, ${image_url ? '?' : ''} ?, ?, ?, ?, ?)`;
 
@@ -29,7 +26,6 @@ export default async function handler(req, res) {
         if (image_url) values.push(image_url);
         values.push(description, JSON.stringify(ingredients), instructions, source_id, is_user_created);
 
-        // Execute the query
         const [result] = await connection.query(query, values);
 
         await connection.end();
