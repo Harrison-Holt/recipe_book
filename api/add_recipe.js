@@ -30,7 +30,6 @@ export default async function handler(req, res) {
         if (image_url) values.push(image_url);
         values.push(description, JSON.stringify(ingredients), instructions, source_id, is_user_created);
 
-        // Execute the query
         const [result] = await connection.query(query, values);
 
         await connection.end();
