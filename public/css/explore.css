@@ -1,0 +1,80 @@
+/* Global Styles */  
+body {
+    margin: 0; 
+    padding: 0;
+    overflow-x: hidden; 
+    font-family: 'Raleway', sans-serif;
+}
+
+/* Header Styles */
+header {
+    background-color: #5A818A;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+header h1 {
+    font-family: 'Raleway', sans-serif; 
+    color: #fff; 
+    margin: 0;
+    padding-left: 20px;
+}
+
+#logout {
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#logout:hover {
+    background-color: #d9534f;
+    transform: scale(1.05);
+}
+
+/* Footer Styles */
+footer {
+    background-color: #5A818A;
+    color: #fff;
+}
+
+footer p {
+    margin: 0;
+    font-size: 18px;
+}
+
+#settings {
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#settings:hover {
+    background-color: #4e6877; 
+    transform: scale(1.05);
+}
+
+/* Main Styles */
+main {
+    padding: 20px;
+    min-height: calc(100vh - 100px); /* Adjust height to fill space between header and footer */
+    background-image: url("../images/kitchen_background_empty.jpg"); /* Your background image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    align-items: center;
+}
+
+#user_greeting {
+    margin-top: 20px;
+    color: #333;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    align-items: center;
+}
+#homepage, #homepage {
+    margin-right: 10px;
+}
