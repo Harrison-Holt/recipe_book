@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken'; 
 
 export default async function handler(req, res) {
+    // Check if the request method is POST
     if (req.method !== 'POST') {
         res.status(405).json({ message: 'Only POST requests are allowed' });
         return;
@@ -10,6 +11,7 @@ export default async function handler(req, res) {
 
     const { username, password, email } = req.body;
 
+    // Validate request data
     if (!username || !password || !email) {
         res.status(400).json({ message: 'username, password, and email are required!' });
         return;
@@ -35,11 +37,14 @@ export default async function handler(req, res) {
                 expiresIn: '1h',
             });
         
-
-        res.status(201).json({ message: 'User created successfully', userId: result.insertId, token});
+            res.status(201).json({ message: 'User created successfully', userId: result.insertId, token });
+        } else {
+            res.status(500).json({ message: 'Failed to create user in the database' });
         }
+
+        await connection.end();
     } catch (error) {
-        console.error('Error occurred during request processing:', error.message, error.stack);
+        console.error('Error occurred during request processing:', error.message);
         res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
 }
