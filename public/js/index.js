@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const createRecipeBtn = document.getElementById('createRecipeBtn');
     const userGreeting = document.getElementById('user_greeting');
     const gridContainer = document.querySelector('.grid-container');
+    const API_KEY = '900db7acc0df4aef8b9679a2a001becf'; 
 
     // Function to decode JWT token and extract user data
     function decodeToken(token) {
@@ -33,17 +34,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    const API_KEY = '900db7acc0df4aef8b9679a2a001becf';
-
-     // Fetch random recipes from Spoonacular and display them
-     function fetchFeaturedRecipes() {
-        fetch(`https://api.spoonacular.com/recipes/random?number=30&apiKey=${API_KEY}`)
+    // Fetch four random recipes from Spoonacular and display them
+    function fetchFeaturedRecipes() {
+        fetch(`https://api.spoonacular.com/recipes/random?number=4&apiKey=${API_KEY}`)
             .then(response => response.json())
             .then(data => {
                 const recipesWithImages = data.recipes.filter(recipe => recipe.image && recipe.image.trim() !== '');
                 gridContainer.innerHTML = ''; // Clear existing content
 
-                recipesWithImages.forEach(recipe => {
+                recipesWithImages.slice(0, 4).forEach(recipe => { // Ensure only 4 recipes are displayed
                     const recipeCard = document.createElement('div');
                     recipeCard.classList.add('col-md-4', 'mb-4');
                     recipeCard.innerHTML = `
@@ -97,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Event listeners for buttons
+    // Event listeners for navigation buttons
     createRecipeBtn.addEventListener('click', function () {
         window.location.href = './myrecipes.html'; // Navigate to My Recipes page
     });
@@ -116,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = './login.html';
     }
 
-    // Initialize other functions
+    // Initialize Spoonacular API functions
     fetchFeaturedRecipes();
 });
 
