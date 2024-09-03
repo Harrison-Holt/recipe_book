@@ -115,7 +115,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Initialize other functions
-    fetchAllRecipes();
-    fetchDailyFeaturedRecipe();
+    fetchFeaturedRecipes();
 });
 
