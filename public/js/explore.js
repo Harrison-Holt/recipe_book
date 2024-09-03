@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const recipeInstructions = document.getElementById('recipeInstructions');
     const addToMyRecipesBtn = document.getElementById('addToMyRecipesBtn');
     let currentRecipeId = null;
-    const API_KEY = '900db7acc0df4aef8b9679a2a001becf';
+    const API_KEY = process.env.API_KEY;
 
     // Fetch the userId (username) from the JWT token or local storage
     const token = localStorage.getItem('token');
