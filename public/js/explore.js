@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(recipeData => {
                 const recipePayload = {
-                    userId: userId, // Use the username as userId
+                    userId: userId, 
                     title: recipeData.title || '',
                     image_url: recipeData.image || null,
                     description: recipeData.summary || '',

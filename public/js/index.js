@@ -33,33 +33,66 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Fetch all recipes and display them
-    function fetchAllRecipes() {
-        fetch('/api/recipes') // Adjust the endpoint based on your backend setup
+     // Fetch random recipes from Spoonacular and display them
+     function fetchFeaturedRecipes() {
+        fetch(`https://api.spoonacular.com/recipes/random?number=30&apiKey=${API_KEY}`)
             .then(response => response.json())
             .then(data => {
-                data.forEach(recipe => {
-                    const recipeItem = document.createElement('div');
-                    recipeItem.classList.add('grid-item');
-                    recipeItem.textContent = recipe.title; // Adjust as needed
-                    gridContainer.appendChild(recipeItem);
+                const recipesWithImages = data.recipes.filter(recipe => recipe.image && recipe.image.trim() !== '');
+                gridContainer.innerHTML = ''; // Clear existing content
+
+                recipesWithImages.forEach(recipe => {
+                    const recipeCard = document.createElement('div');
+                    recipeCard.classList.add('col-md-4', 'mb-4');
+                    recipeCard.innerHTML = `
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">${recipe.title}</h5>
+                                <img src="${recipe.image}" alt="${recipe.title}" class="img-fluid mb-2"/>
+                                <button class="btn btn-primary view-details" data-id="${recipe.id}">View Details</button>
+                            </div>
+                        </div>`;
+                    gridContainer.appendChild(recipeCard);
                 });
+
+                attachViewDetailsEventListeners();
             })
             .catch(error => console.error('Error fetching recipes:', error));
     }
 
-    // Fetch daily featured recipe and display it
-    function fetchDailyFeaturedRecipe() {
-        fetch('/api/featured-recipe') // Adjust the endpoint
+    // Fetch recipe details from Spoonacular and display them in a modal
+    function fetchRecipeDetails(recipeId) {
+        fetch(`https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${API_KEY}`)
             .then(response => response.json())
             .then(data => {
-                gridContainer.innerHTML = ''; // Clear existing content
-                const dailyRecipe = document.createElement('div');
-                dailyRecipe.classList.add('grid-item');
-                dailyRecipe.textContent = data.title; // Adjust as needed
-                gridContainer.appendChild(dailyRecipe);
+                const recipeModal = new bootstrap.Modal(document.getElementById('recipeModal'));
+                const recipeTitle = document.getElementById('recipeTitle');
+                const recipeDescription = document.getElementById('recipeDescription');
+                const recipeIngredients = document.getElementById('recipeIngredients');
+                const recipeInstructions = document.getElementById('recipeInstructions');
+
+                recipeTitle.textContent = data.title;
+                recipeDescription.textContent = data.summary;
+                recipeIngredients.innerHTML = ''; // Clear previous ingredients
+                data.extendedIngredients.forEach(ingredient => {
+                    const li = document.createElement('li');
+                    li.textContent = ingredient.original;
+                    recipeIngredients.appendChild(li);
+                });
+                recipeInstructions.textContent = data.instructions;
+                recipeModal.show();
             })
-            .catch(error => console.error('Error fetching daily recipe:', error));
+            .catch(error => console.error('Error fetching recipe details:', error));
+    }
+
+    // Attach event listeners for the "View Details" buttons
+    function attachViewDetailsEventListeners() {
+        document.querySelectorAll('.view-details').forEach(button => {
+            button.addEventListener('click', function () {
+                const recipeId = this.getAttribute('data-id');
+                fetchRecipeDetails(recipeId);
+            });
+        });
     }
 
     // Event listeners for buttons
