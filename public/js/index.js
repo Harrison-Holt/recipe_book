@@ -61,18 +61,19 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => console.error('Error fetching recipes:', error));
     }
 
-    // Fetch recipe details from Spoonacular and display them in a modal
+ // Fetch recipe details from Spoonacular
 function fetchRecipeDetails(recipeId) {
     fetch(`https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${API_KEY}`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
-            const recipeTitle = document.getElementById('recipeTitle');
-            const recipeDescription = document.getElementById('recipeDescription');
-            const recipeIngredients = document.getElementById('recipeIngredients');
-            const recipeInstructions = document.getElementById('recipeInstructions');
-
+            // Set the recipe details in the modal
             recipeTitle.textContent = data.title;
-            recipeDescription.innerHTML = data.summary; // Use innerHTML for rich content
+            recipeDescription.innerHTML = data.summary; // Use innerHTML to preserve HTML formatting
             recipeIngredients.innerHTML = ''; // Clear previous ingredients
             data.extendedIngredients.forEach(ingredient => {
                 const li = document.createElement('li');
@@ -81,12 +82,14 @@ function fetchRecipeDetails(recipeId) {
             });
             recipeInstructions.textContent = data.instructions;
 
-            // Initialize and show the Bootstrap modal
-            const recipeModal = new bootstrap.Modal(document.getElementById('recipeModal'));
+            // Show the Bootstrap modal
             recipeModal.show();
         })
-        .catch(error => console.error('Error fetching recipe details:', error));
-}
+        .catch(error => {
+            console.error('Error fetching recipe details:', error);
+            alert('Failed to fetch recipe details. Please try again later.');
+        });
+    }
 
     // Attach event listeners for the "View Details" buttons
     function attachViewDetailsEventListeners() {
