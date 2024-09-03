@@ -43,12 +43,32 @@
             <div class="grid-item">Recipe 3</div>
             <div class="grid-item">Recipe 4</div>
         </div>
+
+        <!-- Modal for Recipe Details -->
+        <div class="modal fade" id="recipeModal" tabindex="-1" aria-labelledby="recipeTitle" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="recipeTitle"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="recipeDescription"></p>
+                        <ul id="recipeIngredients"></ul>
+                        <p id="recipeInstructions"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer class="d-flex flex-row justify-content-between">
         <p>&copy; 2024 FlavorCarft</p>
         <button id="settings" class="btn btn-secondary">Settings</button>
     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz2kv6SP0n8fWML3aHWSUnmVSfZVNXGaYIxmY2Ax6UDE2R1Uhp+GH7x1i3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhG81rKJ5WE3rKU7rRsXIdla7rL7g7qEZZ7KQZ60SkiS6jvM4sMGhPr2TxdB" crossorigin="anonymous"></script>
 
     <script src="./js/verify_token.js"></script>
     <script src="./js/index.js"></script>
