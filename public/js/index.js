@@ -62,29 +62,31 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Fetch recipe details from Spoonacular and display them in a modal
-    function fetchRecipeDetails(recipeId) {
-        fetch(`https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${API_KEY}`)
-            .then(response => response.json())
-            .then(data => {
-                const recipeModal = new bootstrap.Modal(document.getElementById('recipeModal'));
-                const recipeTitle = document.getElementById('recipeTitle');
-                const recipeDescription = document.getElementById('recipeDescription');
-                const recipeIngredients = document.getElementById('recipeIngredients');
-                const recipeInstructions = document.getElementById('recipeInstructions');
+function fetchRecipeDetails(recipeId) {
+    fetch(`https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${API_KEY}`)
+        .then(response => response.json())
+        .then(data => {
+            const recipeTitle = document.getElementById('recipeTitle');
+            const recipeDescription = document.getElementById('recipeDescription');
+            const recipeIngredients = document.getElementById('recipeIngredients');
+            const recipeInstructions = document.getElementById('recipeInstructions');
 
-                recipeTitle.textContent = data.title;
-                recipeDescription.textContent = data.summary;
-                recipeIngredients.innerHTML = ''; // Clear previous ingredients
-                data.extendedIngredients.forEach(ingredient => {
-                    const li = document.createElement('li');
-                    li.textContent = ingredient.original;
-                    recipeIngredients.appendChild(li);
-                });
-                recipeInstructions.textContent = data.instructions;
-                recipeModal.show();
-            })
-            .catch(error => console.error('Error fetching recipe details:', error));
-    }
+            recipeTitle.textContent = data.title;
+            recipeDescription.innerHTML = data.summary; // Use innerHTML for rich content
+            recipeIngredients.innerHTML = ''; // Clear previous ingredients
+            data.extendedIngredients.forEach(ingredient => {
+                const li = document.createElement('li');
+                li.textContent = ingredient.original;
+                recipeIngredients.appendChild(li);
+            });
+            recipeInstructions.textContent = data.instructions;
+
+            // Initialize and show the Bootstrap modal
+            const recipeModal = new bootstrap.Modal(document.getElementById('recipeModal'));
+            recipeModal.show();
+        })
+        .catch(error => console.error('Error fetching recipe details:', error));
+}
 
     // Attach event listeners for the "View Details" buttons
     function attachViewDetailsEventListeners() {
