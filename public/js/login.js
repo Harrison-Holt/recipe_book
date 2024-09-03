@@ -1,4 +1,5 @@
-document.getElementById("login_submit_button").addEventListener('click', async function(event) {
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById("login_submit_button").addEventListener('click', async function(event) {
     event.preventDefault(); 
 
     let username_or_email = document.getElementById("username_or_email").value; 
@@ -30,4 +31,5 @@ document.getElementById("login_submit_button").addEventListener('click', async f
     } catch(error) {
         console.error("Error sending data: ", error); 
     }
-});     
+});    
+});  
