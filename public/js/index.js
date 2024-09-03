@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    const API_KEY = process.env.API_KEY;
+    const API_KEY = '900db7acc0df4aef8b9679a2a001becf';
 
      // Fetch random recipes from Spoonacular and display them
      function fetchFeaturedRecipes() {
