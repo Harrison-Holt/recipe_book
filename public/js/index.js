@@ -37,7 +37,12 @@ document.addEventListener('DOMContentLoaded', function () {
     // Fetch four random recipes from Spoonacular and display them
     function fetchFeaturedRecipes() {
         fetch(`https://api.spoonacular.com/recipes/random?number=4&apiKey=${API_KEY}`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Error fetching featured recipes: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 const recipesWithImages = data.recipes.filter(recipe => recipe.image && recipe.image.trim() !== '');
                 gridContainer.innerHTML = ''; // Clear existing content
@@ -58,37 +63,45 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 attachViewDetailsEventListeners();
             })
-            .catch(error => console.error('Error fetching recipes:', error));
+            .catch(error => {
+                console.error('Error fetching recipes:', error);
+                alert('Failed to fetch featured recipes. Please try again later.');
+            });
     }
 
- // Fetch recipe details from Spoonacular
-function fetchRecipeDetails(recipeId) {
-    fetch(`https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${API_KEY}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Set the recipe details in the modal
-            recipeTitle.textContent = data.title;
-            recipeDescription.innerHTML = data.summary; // Use innerHTML to preserve HTML formatting
-            recipeIngredients.innerHTML = ''; // Clear previous ingredients
-            data.extendedIngredients.forEach(ingredient => {
-                const li = document.createElement('li');
-                li.textContent = ingredient.original;
-                recipeIngredients.appendChild(li);
-            });
-            recipeInstructions.textContent = data.instructions;
+    // Fetch recipe details from Spoonacular
+    function fetchRecipeDetails(recipeId) {
+        fetch(`https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${API_KEY}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Error fetching recipe details: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const recipeTitle = document.getElementById('recipeTitle');
+                const recipeDescription = document.getElementById('recipeDescription');
+                const recipeIngredients = document.getElementById('recipeIngredients');
+                const recipeInstructions = document.getElementById('recipeInstructions');
 
-            // Show the Bootstrap modal
-            recipeModal.show();
-        })
-        .catch(error => {
-            console.error('Error fetching recipe details:', error);
-            alert('Failed to fetch recipe details. Please try again later.');
-        });
+                recipeTitle.textContent = data.title;
+                recipeDescription.innerHTML = data.summary; // Use innerHTML to preserve HTML formatting
+                recipeIngredients.innerHTML = ''; // Clear previous ingredients
+                data.extendedIngredients.forEach(ingredient => {
+                    const li = document.createElement('li');
+                    li.textContent = ingredient.original;
+                    recipeIngredients.appendChild(li);
+                });
+                recipeInstructions.textContent = data.instructions;
+
+                // Initialize and show the Bootstrap modal
+                const recipeModal = new bootstrap.Modal(document.getElementById('recipeModal'));
+                recipeModal.show();
+            })
+            .catch(error => {
+                console.error('Error fetching recipe details:', error);
+                alert('Failed to fetch recipe details. Please try again later.');
+            });
     }
 
     // Attach event listeners for the "View Details" buttons
@@ -123,4 +136,3 @@ function fetchRecipeDetails(recipeId) {
     // Initialize Spoonacular API functions
     fetchFeaturedRecipes();
 });
-
