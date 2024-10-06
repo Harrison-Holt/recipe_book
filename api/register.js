@@ -1,51 +1,45 @@
-import connect_database from '../config/db.js';
-import bcrypt from 'bcryptjs';
+import pool from '../db.js'; 
+import bcrypt from 'bcryptjs'; 
 import jwt from 'jsonwebtoken'; 
 
 export default async function handler(req, res) {
-    // Check if the request method is POST
     if (req.method !== 'POST') {
-        res.status(405).json({ message: 'Only POST requests are allowed' });
-        return;
+        res.status(405).json({ message: 'Only POST requests are allowed' }); 
+        return; 
     }
 
-    const { username, password, email } = req.body;
+    const { username, password, email } = req.body; 
 
-    // Validate request data
     if (!username || !password || !email) {
-        res.status(400).json({ message: 'username, password, and email are required!' });
-        return;
+        res.status(400).json({ message: 'Username, password, and email are required!' }); 
+        return; 
     }
 
     try {
-        const { connection, connected, error } = await connect_database();
+        const hashed_password = await bcrypt.hash(password, 10); 
 
-        if (!connected) {
-            res.status(500).json({ message: 'Database connection failed', error });
-            return;
-        }
+        const result = await pool.query(
+            'INSERT INTO accounts (username, password, email) VALUES ($1, $2, $3) RETURNING *', 
+            [username, hashed_password, email]
+        ); 
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = result.rows[0]; 
 
-        const [result] = await connection.execute(
-            'INSERT INTO accounts (username, password, email) VALUES (?, ?, ?)',
-            [username, hashedPassword, email]
-        );
+        const token = jwt.sign(
+            { userId: user.id, username: user.username }, 
+            process.env.JWT_SECRET, 
+            { expiresIn: '1h' }
+        ); 
 
-        if (result.affectedRows === 1) {
-            const token = jwt.sign({ userId: result.insertId, username, email }, process.env.JWT_SECRET, {
-                expiresIn: '1h',
-            });
-        
-            res.status(201).json({ message: 'User created successfully', userId: result.insertId, token });
-        } else {
-            res.status(500).json({ message: 'Failed to create user in the database' });
-        }
-
-        await connection.end();
+        res.status(201).json({ message: 'Account created successfully', token, account: { username: user.username } });
     } catch (error) {
-        console.error('Error occurred during request processing:', error.message);
-        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+        console.error('Error occurred during request processing: ', error);
+
+        // Handle specific error scenarios
+        if (error.code === '23505') {  // PostgreSQL unique violation error code
+            res.status(409).json({ message: 'Username or email already exists' });
+        } else {
+            res.status(500).json({ message: 'Internal Server Error', error: error.message }); 
+        }
     }
 }
-
