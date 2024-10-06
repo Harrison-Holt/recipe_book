@@ -23,7 +23,7 @@ export default async function handler(req, res) {
             return;
         }
 
-        let query = 'SELECT * FROM user WHERE ';
+        let query = 'SELECT * FROM accounts WHERE ';
         const params = [];
 
         if (username_or_email.includes('@')) {

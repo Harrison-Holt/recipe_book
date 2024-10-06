@@ -28,7 +28,7 @@ export default async function handler(req, res) {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const [result] = await connection.execute(
-            'INSERT INTO user (username, password, email) VALUES (?, ?, ?)',
+            'INSERT INTO accounts (username, password, email) VALUES (?, ?, ?)',
             [username, hashedPassword, email]
         );
 
