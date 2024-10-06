@@ -1,19 +1,39 @@
-import mysql from 'mysql2/promise';
+import pkg from 'pg'; 
+import dotenv from 'dotenv'; 
 
-export default async function connect_database() {
-    try {
-        const connection = await mysql.createConnection({
-            host: process.env.DB_HOST,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME,
-            port: Number(process.env.DB_PORT) || 3306,
-        });
+dotenv.config(); 
 
-        console.log("Database connection established successfully");
-        return { connection, connected: true };
-    } catch (error) {
-        console.error("Database connection failed: ", error);
-        return { connection: null, connected: false, error: error.message };
+const { Pool } = pkg;
+
+let pool;
+
+try {
+    // Check if the connection string is provided
+    if (!process.env.DATABASE_URL) {
+        throw new Error('DATABASE_URL is not set in environment variables');
     }
+
+    // Initialize the pool
+    pool = new Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false  
+        }
+    });
+
+    // Test the connection
+    pool.connect((err, client, release) => {
+        if (err) {
+            console.error('Error acquiring client', err.stack);
+        } else {
+            console.log('Database connection successful');
+        }
+        release();  
+    });
+
+} catch (error) {
+    console.error('Failed to set up the database pool:', error.message);
+    process.exit(1); 
 }
+
+export default pool;
