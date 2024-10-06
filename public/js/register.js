@@ -15,7 +15,7 @@ document.getElementById("register_submit_button").addEventListener('click', asyn
         });
 
         if (response.ok) {
-            const data = await response.json();  
+            const data = await response.text();  
             
             if (data.token) {
                 localStorage.setItem('token', data.token); 
