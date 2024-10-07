@@ -24,7 +24,9 @@ footer {
     background-color: #5A818A;
     color: #fff; 
 }
-
+.nav-link {
+    background-color: #ffffff;
+}
 footer p {
     margin: 10px; 
     font-size: 24px;
