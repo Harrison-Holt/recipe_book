@@ -2,7 +2,10 @@ document.getElementById("homepage").addEventListener('click', function() {
 
     window.location.href = './index.html'; 
 }); 
+document.getElementById("logout").addEventListener('click', function() {
 
+    window.location.href = './login.html'; 
+}); 
 document.addEventListener('DOMContentLoaded', function () {
 
     const deleteAccountButton = document.getElementById('deleteAccount');
