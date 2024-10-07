@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let password = document.getElementById("password").value; 
 
     try {
-        const response = await fetch(`/api/login?username_or_email=${encodeURIComponent(username_or_email)}&password=${encodeURIComponent(password)}`, {
+        const response = await fetch(`/api/login`, {
             method: 'POST', 
             headers: {
                 'Content-Type': 'application/json'
