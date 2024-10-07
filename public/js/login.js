@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("login_submit_button").addEventListener('click', async function(event) {
     event.preventDefault(); 
 
-    let username_or_email = document.getElementById("username_or_email").value; 
+    let username = document.getElementById("username").value; 
     let password = document.getElementById("password").value; 
 
     try {
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {
                 'Content-Type': 'application/json'
             }, 
-            body: JSON.stringify({ username_or_email, password })
+            body: JSON.stringify({ username, password })
         }); 
 
         if(response.ok) {
