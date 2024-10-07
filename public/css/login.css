@@ -21,6 +21,12 @@ header nav a {
     color: #fff; 
 }
 
+header nav a:hover {
+    border: 2px solid #000; 
+    background-color: #000;
+}
+
+
 /* Footer Styles */ 
 footer {
     background-color: #3C5152;
