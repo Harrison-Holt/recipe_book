@@ -19,12 +19,11 @@ header h1 {
 header nav a {
     text-decoration: hidden;
     color: #fff; 
-    padding: 30px; 
+    padding: 10px; 
 }
 
 header nav a:hover {
     border: 2px solid #fff; 
-    border-radius: 50%;
 }
 
 /* Footer Styles */ 
