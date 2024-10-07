@@ -7,10 +7,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     try {
         const response = await fetch(`/api/login?username_or_email=${encodeURIComponent(username_or_email)}&password=${encodeURIComponent(password)}`, {
-            method: 'GET', 
+            method: 'POST', 
             headers: {
                 'Content-Type': 'application/json'
-            }        
+            }, 
+            body: JSON.stringify({ username_or_email, password }); 
         }); 
 
         if(response.ok) {
