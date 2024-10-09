@@ -1,0 +1,46 @@
+body {
+    overflow-x: hidden;
+}
+
+header, footer {
+    background-color: #ECEDEF;
+}
+
+main {
+    background-image: url('https://flavor-craft.s3.amazonaws.com/kitchen_background_empty.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.Create_Your_Own_Recipes {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1)), 
+    url('https://flavor-craft.s3.amazonaws.com/current_reciepes_background.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 50vh;
+    min-width: 30vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+    border-radius: 25px; 
+    padding: 25px;
+}
+
+.Explore_Current_Recipes {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1)),
+    url('https://flavor-craft.s3.amazonaws.com/my_recipes_background.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 50vh;
+    min-width: 30vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+    border-radius: 25px; 
+    padding: 25px;
+}
