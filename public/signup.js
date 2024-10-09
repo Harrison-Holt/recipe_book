@@ -46,6 +46,6 @@ function signUpWithCognito(username, email, password, phone_number) {
         const cognitoUser = result.user;
         console.log('User signup successful: ', cognitoUser); 
 
-        window.location.href = 'index.html'; 
+        window.location.href = 'confirm_email.html'; 
     });
 }
