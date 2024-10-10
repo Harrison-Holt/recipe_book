@@ -5,7 +5,7 @@ const poolData = {
 
 const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
-document.getElementById('submit_button').addEventListener('click', (event) => {
+document.getElementById('signin_button').addEventListener('click', (event) => {
     event.preventDefault();
 
     let username = document.getElementById('username').value;
