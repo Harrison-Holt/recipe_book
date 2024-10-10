@@ -19,7 +19,7 @@
     <main class="container-fluid min-vh-100 d-flex flex-column justify-content-around align-items-center">
         <section class="row d-flex flex-row justify-content-around align-items-center">
             <div class="col-12">
-                <h2>Welcome, Username!</h2>
+                <h2>Welcome, <span id="username">Username</span>!</h2> <!-- Placeholder for the username -->
             </div>
         </section>
         <section class="row d-flex flex-row justify-content-between align-items-center gap-5">
@@ -50,9 +50,11 @@
         <p>&copy; 2024 FlavorCarft</p>
         </div>
         <div class="col-5 d-flex m-2 justify-content-end align-items-center">
-            <a class="btn btn-outline-dark">Logout</a>
+            <a class="btn btn-outline-dark" id="logout_button">Logout</a> 
             <a class="btn btn-outline-dark">Settings</a>
         </div>
     </footer>
+
+    <script src="index.js"></script> 
 </body>
 </html>
