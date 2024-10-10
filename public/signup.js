@@ -1,38 +1,20 @@
-
-require('dotenv').config(); // Load environment variables
-
 const poolData = {
-    UserPoolId: process.env.USER_POOL_ID, 
-    ClientId: process.env.CLIENT_ID
+    UserPoolId: 'us-east-1_DRWagBaO2', 
+    ClientId: '3vh2b86tgs6kunsucf0lpmk27s' 
 };
-
-const clientSecret = process.env.CLIENT_SECRET; 
 
 const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
-// Function to calculate SECRET_HASH
-function getSecretHash(username, clientId, clientSecret) {
-    const crypto = require('crypto');
-    return crypto.createHmac('SHA256', clientSecret)
-        .update(username + clientId)
-        .digest('base64');
-}
-
 // Signup form submission
-document.getElementById('submit_button').addEventListener('click', (event) => {
+document.getElementById('signup_form').addEventListener('submit', (event) => {
     event.preventDefault();
 
     const username = document.getElementById('username').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    signUpWithCognito(username, email, password);
-});
-
-function signUpWithCognito(username, email, password) {
     const attributeList = [];
 
-    // Email attribute
     const dataEmail = {
         Name: 'email',
         Value: email
@@ -41,21 +23,49 @@ function signUpWithCognito(username, email, password) {
     const attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
     attributeList.push(attributeEmail);
 
-    // Generate the SECRET_HASH
-    const secretHash = getSecretHash(username, poolData.ClientId, clientSecret);
-
-    // Sign up the user with Cognito
-    userPool.signUp(username, password, attributeList, { SecretHash: secretHash }, (err, result) => {
+    userPool.signUp(username, password, attributeList, null, (err, result) => {
         if (err) {
             console.error('Error signing up: ', err.message || JSON.stringify(err));
             alert('Error: ' + err.message || JSON.stringify(err));
             return;
         }
 
-        const cognitoUser = result.user;
-        console.log('User signup successful:', cognitoUser);
+        console.log('User signup successful:', result.user.getUsername());
+        // Show the confirmation form
+        document.getElementById('signup_form').style.display = 'none';
+        document.getElementById('confirmation_form').style.display = 'block';
 
-        window.location.href = 'confirm_email.html';
+        // Store username for confirmation
+        localStorage.setItem('username', username);
     });
-}
+});
+
+// Confirmation form submission
+document.getElementById('confirmation_form').addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const username = localStorage.getItem('username');
+    const confirmationCode = document.getElementById('code').value;
+
+    const userData = {
+        Username: username,
+        Pool: userPool
+    };
+
+    const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+    cognitoUser.confirmRegistration(confirmationCode, true, (err, result) => {
+        if (err) {
+            console.error('Error confirming account: ', err.message || JSON.stringify(err));
+            alert('Error: ' + err.message || JSON.stringify(err));
+            return;
+        }
+
+        console.log('Account confirmed successfully:', result);
+        alert('Account confirmed successfully!');
+
+        // Redirect to the login page
+        window.location.href = 'signin.html';
+    });
+});
 

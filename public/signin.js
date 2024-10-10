@@ -1,36 +1,26 @@
-require('dotenv').config(); // Load environment variables
-
 const poolData = {
-    UserPoolId: process.env.USER_POOL_ID, 
-    ClientId: process.env.CLIENT_ID
+    UserPoolId: 'us-east-1_DRWagBaO2', 
+    ClientId: '3vh2b86tgs6kunsucf0lpmk27s' 
 };
-
-const clientSecret = process.env.CLIENT_SECRET; 
 
 const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
-// Function to calculate SECRET_HASH
-function getSecretHash(username, clientId, clientSecret) {
-    const crypto = require('crypto');
-    return crypto.createHmac('SHA256', clientSecret)
-        .update(username + clientId)
-        .digest('base64');
-}
+document.getElementById('submit_button').addEventListener('click', (event) => {
+    event.preventDefault();
 
-function signInWithCognito(username, password) {
+    let username = document.getElementById('username').value;
+    let password = document.getElementById('password').value;
+
+    loginWithCognito(username, password);
+});
+
+function loginWithCognito(username, password) {
     const authenticationData = {
         Username: username,
         Password: password
     };
 
-    // Calculate SECRET_HASH
-    const secretHash = getSecretHash(username, poolData.ClientId, clientSecret);
-
-    const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-        Username: username,
-        Password: password,
-        SecretHash: secretHash // Pass the secret hash here
-    });
+    const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
 
     const userData = {
         Username: username,
@@ -40,24 +30,21 @@ function signInWithCognito(username, password) {
     const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
 
     cognitoUser.authenticateUser(authenticationDetails, {
-        onSuccess: function (result) {
-            console.log('Access token:', result.getAccessToken().getJwtToken());
-            alert('Login successful!');
+        onSuccess: function(result) {
+            console.log('Login success!');
+            console.log('Access token: ' + result.getAccessToken().getJwtToken());
+
+            // Store the token in localStorage or sessionStorage if you need to keep the user logged in
+            localStorage.setItem('access_token', result.getAccessToken().getJwtToken());
+
+            // Redirect to another page after login
+            window.location.href = 'index.html'; 
         },
 
-        onFailure: function (err) {
-            console.error('Login failed:', err.message || JSON.stringify(err));
-            alert('Login failed: ' + (err.message || JSON.stringify(err)));
-        }
+        onFailure: function(err) {
+            console.error('Login failed: ', err.message || JSON.stringify(err));
+            alert('Login failed: ' + err.message || JSON.stringify(err));
+        },
+
     });
 }
-
-// Example of using the signInWithCognito function
-document.getElementById('submit_button').addEventListener('click', (event) => {
-    event.preventDefault();
-
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    signInWithCognito(username, password);
-});
