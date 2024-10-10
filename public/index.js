@@ -17,7 +17,7 @@ function restrictAccess() {
     const token = localStorage.getItem('access_token');
     
     if (!token || isTokenExpired(token)) {
-        
+
         // If no token or token is expired, redirect to login page
         window.location.href = 'signin.html';
     } else {
@@ -45,5 +45,5 @@ document.getElementById('logout_button').addEventListener('click', (event) => {
     window.location.href = 'signin.html';
 });
 
-// Call the function to restrict access when the page loads
 restrictAccess();
+displayUsername(); 
