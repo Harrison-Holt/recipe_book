@@ -1,3 +1,28 @@
+
+async function fetch_daily_recipes() {
+
+    try {
+        const response = await fetch('https://api.spoonacular.com/recipes/random', {
+            method: 'GET', 
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }); 
+
+        if(!response.ok) {
+            console.log(`Connection Error: ${response.status}`); 
+            return; 
+        }
+
+        const data = await response.json(); 
+        console.log(data); 
+
+    } catch(error) {
+        console.error("Error sending data: ", error); 
+    }
+}
+
+
 // Function to decode JWT and extract the payload
 function decodeJWT(token) {
     const payload = token.split('.')[1]; 
@@ -31,7 +56,8 @@ function displayUsername() {
     const token = localStorage.getItem('access_token');
     if (token) {
         const decodedToken = decodeJWT(token);
-        const username = decodedToken['cognito:username']; // Cognito stores the username under 'cognito:username'
+        const username = decodedToken['cognito:username']; 
+        console.log(username); 
         document.getElementById('username').textContent = username;
     }
 }
@@ -45,5 +71,7 @@ document.getElementById('logout_button').addEventListener('click', (event) => {
     window.location.href = 'signin.html';
 });
 
+
+
 restrictAccess();
-displayUsername(); 
+fetch_daily_recipes(); 
