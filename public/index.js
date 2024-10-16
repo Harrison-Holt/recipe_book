@@ -45,18 +45,11 @@ async function fetchAndDisplayRecipes() {
             card.innerHTML = `
                 <div class="recipe-title">${recipe.title}</div>
                 <img src="${recipe.image}" alt="${recipe.title}" class="recipe-image">
-                <div class="recipe-details">
-                    <p><strong>Summary:</strong> ${recipe.summary || 'No summary available.'}</p>
-                    <p><strong>Instructions:</strong> ${recipe.instructions || 'No instructions provided.'}</p>
-                    <p><strong>Servings:</strong> ${recipe.servings || 'N/A'}</p>
-                    <p><strong>Preparation Time:</strong> ${recipe.preparationMinutes || 'N/A'} mins</p>
-                    <p><strong>Cooking Time:</strong> ${recipe.cookingMinutes || 'N/A'} mins</p>
-                </div>
             `;
 
-            // Add click event listener to toggle the details
+            // Add click event listener to show recipe details in the modal
             card.addEventListener('click', () => {
-                card.classList.toggle('active');
+                displayRecipeInModal(recipe);
             });
 
             // Append the card to the container
@@ -65,9 +58,31 @@ async function fetchAndDisplayRecipes() {
     });
 }
 
+// Function to display the recipe in the modal
+function displayRecipeInModal(recipe) {
+    // Set the modal fields with the recipe data
+    document.getElementById('modal-recipe-title').textContent = recipe.title;
+    document.getElementById('modal-recipe-image').src = recipe.image;
+    document.getElementById('modal-recipe-summary').textContent = recipe.summary || 'No summary available.';
+    document.getElementById('modal-recipe-servings').textContent = recipe.servings || 'N/A';
+    document.getElementById('modal-preparation-time').textContent = recipe.preparationMinutes || 'N/A';
+    document.getElementById('modal-cooking-time').textContent = recipe.cookingMinutes || 'N/A';
+    document.getElementById('modal-recipe-instructions').textContent = recipe.instructions || 'No instructions provided.';
+
+    // Show the modal
+    const recipeModal = new bootstrap.Modal(document.getElementById('recipeModal'));
+    recipeModal.show();
+}
 
 // Call the function when the page loads
 window.onload = fetchAndDisplayRecipes();
+
+// Handle "Add to My Recipe" button click
+document.getElementById('add-to-recipe').addEventListener('click', () => {
+    alert('Recipe added to your collection!');
+});
+
+
 
 // Function to decode JWT and extract the payload
 function decodeJWT(token) {
