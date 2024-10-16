@@ -15,13 +15,43 @@ async function fetch_daily_recipes() {
         }
 
         const data = await response.json();
-        console.log(data);
-
+        displayRecipeCards(data); // Call function to display recipe cards
     } catch (error) {
-        console.error("Error sending data: ", error);
+        console.error("Error fetching data: ", error);
     }
 }
 
+// Function to display recipe cards in a Bootstrap grid
+function displayRecipeCards(recipes) {
+    const container = document.getElementById('recipe-container');
+    recipes.forEach((recipe) => {
+        const card = document.createElement('div');
+        card.classList.add('col-6'); // Using Bootstrap's col-6 for 2 columns
+
+        // Create the card HTML structure
+        card.innerHTML = `
+            <div class="recipe-card">
+                <div class="recipe-title">${recipe.title}</div>
+                <img src="${recipe.image}" alt="${recipe.title}" class="recipe-image">
+                <div class="recipe-details">
+                    <p><strong>Summary:</strong> ${recipe.summary}</p>
+                    <p><strong>Instructions:</strong> ${recipe.instructions}</p>
+                    <p><strong>Servings:</strong> ${recipe.servings}</p>
+                    <p><strong>Preparation Time:</strong> ${recipe.preparationMinutes} mins</p>
+                    <p><strong>Cooking Time:</strong> ${recipe.cookingMinutes} mins</p>
+                </div>
+            </div>
+        `;
+
+        // Add click event listener to toggle the details
+        card.querySelector('.recipe-card').addEventListener('click', () => {
+            card.querySelector('.recipe-card').classList.toggle('active');
+        });
+
+        // Append the card to the container
+        container.appendChild(card);
+    });
+}
 
 
 // Function to decode JWT and extract the payload
