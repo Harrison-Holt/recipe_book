@@ -20,8 +20,15 @@ async function fetchDailyRecipe() {
         // Access the recipes array from the returned data
         const recipes = result.data.recipes;  // 'recipes' is nested under 'data'
 
-        // Display the recipes on the frontend (example of iterating and showing recipe titles)
-        const recipesContainer = document.getElementById('recipes-container');  // Assume you have a div with this ID
+        // Get the container element where recipes will be displayed
+        const recipesContainer = document.getElementById('recipes-container');
+        
+        // Check if the element exists to avoid the 'null' error
+        if (!recipesContainer) {
+            console.error("Error: 'recipes-container' element not found in the DOM.");
+            return;
+        }
+
         recipesContainer.innerHTML = '';  // Clear any previous data
 
         // Loop through each recipe and add it to the DOM
@@ -49,7 +56,7 @@ async function fetchDailyRecipe() {
 }
 
 // Call the function when the page loads
-window.onload = fetchDailyRecipe;
+window.onload = fetchDailyRecipe;  // Make sure this is the correct function name
 
 
 // Function to display recipe cards in a Bootstrap grid
