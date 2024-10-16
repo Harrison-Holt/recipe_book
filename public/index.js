@@ -1,5 +1,6 @@
-async function fetch_daily_recipes() {
+async function fetchDailyRecipe() {
     try {
+        // Make a request to your Lambda API Gateway URL
         const response = await fetch('https://h1ynlo4u7d.execute-api.us-east-1.amazonaws.com/dev/daily-recipe', {
             method: 'GET',
             headers: {
@@ -7,19 +8,46 @@ async function fetch_daily_recipes() {
             }
         });
 
+        // Check if the request was successful
         if (!response.ok) {
-            console.error(`Connection Error: ${response.status} - ${response.statusText}`);
-            const errorData = await response.text();
-            console.error("Error response body:", errorData);
+            console.error(`Error: ${response.status} - ${response.statusText}`);
             return;
         }
 
+        // Parse the JSON response
         const data = await response.json();
-        displayRecipeCards(data); // Call function to display recipe cards
+
+        // Access the recipes array from the returned data
+        const recipes = data.data;  // 'data' is the property where the 'recipes' array is stored
+
+        // Display the recipes on the frontend (example of iterating and showing recipe titles)
+        const recipesContainer = document.getElementById('recipes-container');  // Assume you have a div with this ID
+        recipesContainer.innerHTML = '';  // Clear any previous data
+
+        // Loop through each recipe and add it to the DOM
+        recipes.forEach((recipe, index) => {
+            const recipeElement = document.createElement('div');
+            recipeElement.classList.add('recipe');
+
+            // Example of adding recipe title and image
+            recipeElement.innerHTML = `
+                <h2>Recipe ${index + 1}: ${recipe.title}</h2>
+                <img src="${recipe.image}" alt="${recipe.title}" />
+                <p>${recipe.summary}</p>
+            `;
+
+            // Append the recipe to the container
+            recipesContainer.appendChild(recipeElement);
+        });
+
     } catch (error) {
-        console.error("Error fetching data: ", error);
+        console.error('Error fetching recipes:', error);
     }
 }
+
+// Call the function when the page loads
+window.onload = fetchDailyRecipe;
+
 
 // Function to display recipe cards in a Bootstrap grid
 function displayRecipeCards(recipes) {
