@@ -1,6 +1,6 @@
 async function fetchDailyRecipe() {
     try {
-        // Make a request to your Lambda API Gateway URL
+        // Fetch daily recipes from your Lambda API Gateway URL
         const response = await fetch('https://h1ynlo4u7d.execute-api.us-east-1.amazonaws.com/dev/daily-recipe', {
             method: 'GET',
             headers: {
@@ -16,35 +16,32 @@ async function fetchDailyRecipe() {
 
         // Parse the JSON response
         const result = await response.json();
+        const recipes = result.data.recipes;  // Extract the 'recipes' array
 
-        // Access the recipes array from the returned data
-        const recipes = result.data.recipes;  // 'recipes' is nested under 'data'
-
-        // Get the container element where recipes will be displayed
         const recipesContainer = document.getElementById('recipes-container');
-        
-        if (!recipesContainer) {
-            console.error("Error: 'recipes-container' element not found in the DOM.");
-            return;
-        }
+        recipesContainer.innerHTML = '';  // Clear any previous content
 
-        recipesContainer.innerHTML = '';  // Clear any previous data
-
-        // Loop through each recipe and add it to the DOM
+        // Loop through recipes and render each as a card
         recipes.forEach((recipe, index) => {
-            const recipeElement = document.createElement('div');
-            recipeElement.classList.add('recipe', 'col-12', 'col-md-4', 'mb-4');
+            const recipeCard = document.createElement('div');
+            recipeCard.classList.add('col-12', 'col-md-6', 'recipe-card', 'mb-4');
 
-            recipeElement.innerHTML = `
-                <h4>${recipe.title}</h4>
-                <img src="${recipe.image}" alt="${recipe.title}" class="img-fluid" />
-                <p>${recipe.summary}</p>
-                <p><strong>Servings:</strong> ${recipe.servings}</p>
-                <p><strong>Ready in:</strong> ${recipe.readyInMinutes} minutes</p>
-                <a href="${recipe.sourceUrl}" target="_blank" class="btn btn-primary">See Full Recipe</a>
+            recipeCard.innerHTML = `
+                <div class="recipe-title">${recipe.title}</div>
+                <img src="${recipe.image}" alt="${recipe.title}" class="recipe-image">
+                <div class="recipe-details">
+                    <p><strong>Servings:</strong> ${recipe.servings}</p>
+                    <p><strong>Ready in:</strong> ${recipe.readyInMinutes} minutes</p>
+                    <a href="${recipe.sourceUrl}" target="_blank" class="btn btn-primary">See Full Recipe</a>
+                </div>
             `;
 
-            recipesContainer.appendChild(recipeElement);
+            // Add event listener to toggle recipe details
+            recipeCard.addEventListener('click', () => {
+                recipeCard.classList.toggle('active');
+            });
+
+            recipesContainer.appendChild(recipeCard);
         });
 
     } catch (error) {
@@ -54,7 +51,6 @@ async function fetchDailyRecipe() {
 
 // Call the function when the page loads
 window.onload = fetchDailyRecipe;
-
 
 // Function to display recipe cards in a Bootstrap grid
 function displayRecipeCards(recipes) {
