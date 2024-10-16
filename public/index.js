@@ -1,56 +1,63 @@
-async function fetchDailyRecipe() {
-    try {
-        // Fetch daily recipes from your Lambda API Gateway URL
-        const response = await fetch('https://h1ynlo4u7d.execute-api.us-east-1.amazonaws.com/dev/daily-recipe', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-
-        // Check if the request was successful
-        if (!response.ok) {
-            console.error(`Error: ${response.status} - ${response.statusText}`);
-            return;
+// Function to fetch a single recipe
+async function fetchRecipe() {
+    const response = await fetch('https://h1ynlo4u7d.execute-api.us-east-1.amazonaws.com/dev/daily-recipe', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
         }
+    });
 
-        // Parse the JSON response
-        const result = await response.json();
-        const recipes = result.data.recipes;  // Extract the 'recipes' array
+    if (!response.ok) {
+        console.error(`Connection Error: ${response.status} - ${response.statusText}`);
+        return null;
+    }
 
-        const recipesContainer = document.getElementById('recipes-container');
-        recipesContainer.innerHTML = '';  // Clear any previous content
+    const data = await response.json();
+    return data;
+}
 
-        // Loop through recipes and render each as a card
-        recipes.forEach((recipe, index) => {
-            const recipeCard = document.createElement('div');
-            recipeCard.classList.add('col-12', 'col-md-6', 'recipe-card', 'mb-4');
+// Function to fetch and display 4 different recipes
+async function fetchAndDisplayRecipes() {
+    const container = document.getElementById('recipe-container');
 
-            recipeCard.innerHTML = `
-                <div class="recipe-title">${recipe.title}</div>
-                <img src="${recipe.image}" alt="${recipe.title}" class="recipe-image">
-                <div class="recipe-details">
-                    <p><strong>Servings:</strong> ${recipe.servings}</p>
-                    <p><strong>Ready in:</strong> ${recipe.readyInMinutes} minutes</p>
-                    <a href="${recipe.sourceUrl}" target="_blank" class="btn btn-primary">See Full Recipe</a>
+    // Fetch 4 different recipes using Promise.all()
+    const promises = [fetchRecipe(), fetchRecipe(), fetchRecipe(), fetchRecipe()];
+    const recipes = await Promise.all(promises);
+
+    // Display each recipe
+    recipes.forEach((recipe) => {
+        if (recipe) {
+            const card = document.createElement('div');
+            card.classList.add('col-6'); // Using Bootstrap's col-6 for 2 columns
+
+            // Create the card HTML structure
+            card.innerHTML = `
+                <div class="recipe-card">
+                    <div class="recipe-title">${recipe.title}</div>
+                    <img src="${recipe.image}" alt="${recipe.title}" class="recipe-image">
+                    <div class="recipe-details">
+                        <p><strong>Summary:</strong> ${recipe.summary}</p>
+                        <p><strong>Instructions:</strong> ${recipe.instructions}</p>
+                        <p><strong>Servings:</strong> ${recipe.servings}</p>
+                        <p><strong>Preparation Time:</strong> ${recipe.preparationMinutes} mins</p>
+                        <p><strong>Cooking Time:</strong> ${recipe.cookingMinutes} mins</p>
+                    </div>
                 </div>
             `;
 
-            // Add event listener to toggle recipe details
-            recipeCard.addEventListener('click', () => {
-                recipeCard.classList.toggle('active');
+            // Add click event listener to toggle the details
+            card.querySelector('.recipe-card').addEventListener('click', () => {
+                card.querySelector('.recipe-card').classList.toggle('active');
             });
 
-            recipesContainer.appendChild(recipeCard);
-        });
-
-    } catch (error) {
-        console.error('Error fetching recipes:', error);
-    }
+            // Append the card to the container
+            container.appendChild(card);
+        }
+    });
 }
 
 // Call the function when the page loads
-window.onload = fetchDailyRecipe;
+window.onload = fetchAndDisplayRecipes();
 
 // Function to display recipe cards in a Bootstrap grid
 function displayRecipeCards(recipes) {
