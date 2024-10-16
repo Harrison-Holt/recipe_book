@@ -58,24 +58,18 @@ async function fetchAndDisplayRecipes() {
     });
 }
 
-// Function to display the recipe in the modal
 function displayRecipeInModal(recipe) {
     // Set the modal fields with the recipe data
     document.getElementById('modal-recipe-title').textContent = recipe.title || 'No Title';
     document.getElementById('modal-recipe-image').src = recipe.image || '';
 
-    // Check if nutrition information exists
-    const nutrition = recipe.nutrition || {};
-    const calories = nutrition.calories || 'N/A';
-    const protein = nutrition.protein || 'N/A';
-    const fat = nutrition.fat || 'N/A';
-
     // Construct the detailed summary for the modal
-    const summary = `${recipe.title || 'No Title'} is a <b>${(recipe.diets || []).join(", ")}</b> recipe with ${recipe.servings || 'N/A'} servings. 
+    const summary = `
+        ${recipe.title || 'No Title'} is a <b>${(recipe.diets || []).join(", ") || 'N/A'}</b> recipe with ${recipe.servings || 'N/A'} servings. 
         For <b>$${(recipe.pricePerServing || 0).toFixed(2)} per serving</b>, this recipe <b>covers ${recipe.healthScore || 0}%</b> of your daily 
-        requirements of vitamins and minerals. One serving contains <b>${calories} calories</b>, 
-        <b>${protein}g of protein</b>, and <b>${fat}g of fat</b>. It works well as a 
-        ${(recipe.dishTypes || []).join(", ")}. Head to the store and pick up ${(recipe.extendedIngredients || []).map(i => i.name).join(", ")} to make it today. 
+        requirements of vitamins and minerals. One serving contains <b>${recipe.summary || 'N/A'}</b>. It works well as a 
+        ${recipe.dishTypes ? recipe.dishTypes.join(", ") : 'N/A'}. Head to the store and pick up ${(recipe.extendedIngredients || [])
+        .map(i => i.name).join(", ")} to make it today. 
         From preparation to the plate, this recipe takes approximately <b>${recipe.readyInMinutes || "N/A"} minutes</b>. 
         ${recipe.aggregateLikes || 0} people have tried and liked this recipe.`;
 
@@ -99,7 +93,7 @@ function displayRecipeInModal(recipe) {
         instructionsElement.innerHTML = '<li>No instructions available.</li>';
     }
 
-    // Similar Recipes Links
+    // Similar Recipes Links (if available)
     const similarRecipesHTML = (recipe.similarRecipes || []).map(r => `
         <a href="${r.link}" target="_blank">${r.title}</a>
     `).join(", ");
