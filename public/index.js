@@ -63,11 +63,41 @@ function displayRecipeInModal(recipe) {
     // Set the modal fields with the recipe data
     document.getElementById('modal-recipe-title').textContent = recipe.title;
     document.getElementById('modal-recipe-image').src = recipe.image;
-    document.getElementById('modal-recipe-summary').textContent = recipe.summary || 'No summary available.';
-    document.getElementById('modal-recipe-servings').textContent = recipe.servings || 'N/A';
-    document.getElementById('modal-preparation-time').textContent = recipe.preparationMinutes || 'N/A';
-    document.getElementById('modal-cooking-time').textContent = recipe.cookingMinutes || 'N/A';
-    document.getElementById('modal-recipe-instructions').textContent = recipe.instructions || 'No instructions provided.';
+
+    // Construct the detailed summary for the modal
+    const summary = `${recipe.title} is a <b>${recipe.diets.join(", ")}</b> recipe with ${recipe.servings} servings. 
+        For <b>$${recipe.pricePerServing.toFixed(2)} per serving</b>, this recipe <b>covers ${recipe.healthScore}%</b> of your daily 
+        requirements of vitamins and minerals. One serving contains <b>${recipe.nutrition.calories} calories</b>, 
+        <b>${recipe.nutrition.protein}g of protein</b>, and <b>${recipe.nutrition.fat}g of fat</b>. It works well as a 
+        ${recipe.dishTypes.join(", ")}. Head to the store and pick up ${recipe.ingredients.map(i => i.name).join(", ")} to make it today. 
+        From preparation to the plate, this recipe takes approximately <b>${recipe.readyInMinutes || "N/A"} minutes</b>. 
+        ${recipe.aggregateLikes} people have tried and liked this recipe.`;
+    
+    document.getElementById('modal-recipe-summary').innerHTML = summary;
+
+    // Set servings, preparation, and cooking time
+    document.getElementById('modal-recipe-servings').textContent = `Servings: ${recipe.servings || 'N/A'}`;
+    document.getElementById('modal-preparation-time').textContent = `Preparation Time: ${recipe.preparationMinutes || 'N/A'} mins`;
+    document.getElementById('modal-cooking-time').textContent = `Cooking Time: ${recipe.cookingMinutes || 'N/A'} mins`;
+
+    // Instructions
+    const instructionsElement = document.getElementById('modal-recipe-instructions');
+    instructionsElement.innerHTML = ''; // Clear previous content
+    if (recipe.analyzedInstructions && recipe.analyzedInstructions.length > 0) {
+        recipe.analyzedInstructions[0].steps.forEach(step => {
+            const li = document.createElement('li');
+            li.textContent = step.step;
+            instructionsElement.appendChild(li);
+        });
+    } else {
+        instructionsElement.innerHTML = '<li>No instructions available.</li>';
+    }
+
+    // Similar Recipes Links
+    const similarRecipesHTML = recipe.similarRecipes.map(r => `
+        <a href="${r.link}" target="_blank">${r.title}</a>
+    `).join(", ");
+    document.getElementById('modal-similar-recipes').innerHTML = similarRecipesHTML || 'No similar recipes available.';
 
     // Show the modal
     const recipeModal = new bootstrap.Modal(document.getElementById('recipeModal'));

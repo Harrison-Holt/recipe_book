@@ -67,13 +67,21 @@
                 </div>
                 <div class="modal-body">
                     <h4 id="modal-recipe-title"></h4>
-                    <img id="modal-recipe-image" src="" alt="Recipe Image" class="img-fluid">
+                    <img id="modal-recipe-image" src="" alt="Recipe Image" class="img-fluid mb-3">
+                    
+                    <!-- Recipe Description -->
                     <p id="modal-recipe-summary"></p>
-                    <p><strong>Servings:</strong> <span id="modal-recipe-servings"></span></p>
-                    <p><strong>Preparation Time:</strong> <span id="modal-preparation-time"></span> mins</p>
-                    <p><strong>Cooking Time:</strong> <span id="modal-cooking-time"></span> mins</p>
-                    <p><strong>Instructions:</strong></p>
-                    <p id="modal-recipe-instructions"></p>
+                    <p id="modal-recipe-servings" class="mb-1"><strong>Servings:</strong> </p>
+                    <p id="modal-preparation-time" class="mb-1"><strong>Preparation Time:</strong> </p>
+                    <p id="modal-cooking-time" class="mb-3"><strong>Cooking Time:</strong> </p>
+    
+                    <!-- Instructions Section -->
+                    <h5>Instructions:</h5>
+                    <ol id="modal-recipe-instructions"></ol>
+    
+                    <!-- Similar Recipes Links -->
+                    <h5>Similar Recipes:</h5>
+                    <p id="modal-similar-recipes"></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
