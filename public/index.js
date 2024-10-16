@@ -143,4 +143,3 @@ document.getElementById('logout_button').addEventListener('click', (event) => {
 
 
 restrictAccess();
-fetch_daily_recipes(); 

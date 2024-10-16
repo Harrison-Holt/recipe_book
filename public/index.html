@@ -10,47 +10,56 @@
 <body>
     <header class="row d-flex flex-row justify-content-between align-items-center">
         <div class="col-md-5 m-2">
-        <h1>FlavorCraft</h1>
+            <h1>FlavorCraft</h1>
         </div>
         <div class="col-md-5 m-2 text-end">
-            <a class="btn btn-outline-dark" href="https://harrisonholt.dev/">portfolio homepage</a>
+            <a class="btn btn-outline-dark" href="https://harrisonholt.dev/">Portfolio Homepage</a>
         </div>
     </header>
+
     <main class="container-fluid min-vh-100 d-flex flex-column justify-content-around align-items-center">
         <section class="row d-flex flex-row justify-content-around align-items-center">
             <div class="col-12">
                 <h2>Welcome, <span id="username">Username</span>!</h2> <!-- Placeholder for the username -->
             </div>
         </section>
+
         <section class="row d-flex flex-row justify-content-between align-items-center gap-5">
-            <div class="col-5 Explore_Current_Recipes d-flex flex-column justify-content-around align-items-center">
+            <div class="col-5 explore-current-recipes d-flex flex-column justify-content-around align-items-center">
                 <h3>Explore Current Recipes!</h3>
                 <a href="#" class="btn btn-dark">Explore Recipes</a>
             </div>
-            <div class="col-5 Create_Your_Own_Recipes d-flex flex-column justify-content-around align-items-center">
+            <div class="col-5 create-your-own-recipes d-flex flex-column justify-content-around align-items-center">
                 <h3>Create Your Own Recipes!</h3>
                 <a href="#" class="btn btn-dark">My Recipes</a>
             </div>
         </section>
-        
+
+        <!-- Section for Daily Featured Recipes -->
         <section class="row d-flex flex-row justify-content-around align-items-center">
             <div class="col-12">
                 <h2>Daily Featured Recipes</h2>
             </div>
         </section>
+
+        <!-- Container where recipes will be dynamically added by JavaScript -->
         <section class="row d-flex flex-row justify-content-around align-items-center" id="recipes-container">
         </section>
     </main>
+
     <footer class="row">
         <div class="col-6 text-end p-3">
-        <p>&copy; 2024 FlavorCarft</p>
+            <p>&copy; 2024 FlavorCraft</p>
         </div>
         <div class="col-5 d-flex m-2 justify-content-end align-items-center">
             <a class="btn btn-outline-dark" id="logout_button">Logout</a> 
             <a class="btn btn-outline-dark">Settings</a>
         </div>
     </footer>
+
+    <!-- Amazon Cognito Identity JS -->
     <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@4.5.10/dist/amazon-cognito-identity.min.js"></script>
     <script src="index.js"></script> 
 </body>
 </html>
+
