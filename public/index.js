@@ -21,7 +21,6 @@ async function fetchRecipe() {
     }
 }
 
-// Function to fetch and display 4 different recipes
 async function fetchAndDisplayRecipes() {
     const container = document.getElementById('recipes-container');
     if (!container) {
@@ -33,30 +32,31 @@ async function fetchAndDisplayRecipes() {
     const promises = [fetchRecipe(), fetchRecipe(), fetchRecipe(), fetchRecipe()];
     const recipes = await Promise.all(promises);
 
+    // Clear previous content
+    container.innerHTML = '';
+
     // Display each recipe
     recipes.forEach((recipe) => {
         if (recipe) {
             const card = document.createElement('div');
-            card.classList.add('col-6', 'mb-4');  // Bootstrap column and margin
+            card.classList.add('recipe-card', 'col-md-6', 'mb-4');  // Bootstrap for 2 columns on medium+ screens
 
             // Create the card HTML structure
             card.innerHTML = `
-                <div class="recipe-card">
-                    <div class="recipe-title">${recipe.title}</div>
-                    <img src="${recipe.image}" alt="${recipe.title}" class="recipe-image">
-                    <div class="recipe-details">
-                        <p><strong>Summary:</strong> ${recipe.summary || 'No summary available.'}</p>
-                        <p><strong>Instructions:</strong> ${recipe.instructions || 'No instructions provided.'}</p>
-                        <p><strong>Servings:</strong> ${recipe.servings || 'N/A'}</p>
-                        <p><strong>Preparation Time:</strong> ${recipe.preparationMinutes || 'N/A'} mins</p>
-                        <p><strong>Cooking Time:</strong> ${recipe.cookingMinutes || 'N/A'} mins</p>
-                    </div>
+                <div class="recipe-title">${recipe.title}</div>
+                <img src="${recipe.image}" alt="${recipe.title}" class="recipe-image">
+                <div class="recipe-details">
+                    <p><strong>Summary:</strong> ${recipe.summary || 'No summary available.'}</p>
+                    <p><strong>Instructions:</strong> ${recipe.instructions || 'No instructions provided.'}</p>
+                    <p><strong>Servings:</strong> ${recipe.servings || 'N/A'}</p>
+                    <p><strong>Preparation Time:</strong> ${recipe.preparationMinutes || 'N/A'} mins</p>
+                    <p><strong>Cooking Time:</strong> ${recipe.cookingMinutes || 'N/A'} mins</p>
                 </div>
             `;
 
             // Add click event listener to toggle the details
-            card.querySelector('.recipe-card').addEventListener('click', () => {
-                card.querySelector('.recipe-card').classList.toggle('active');
+            card.addEventListener('click', () => {
+                card.classList.toggle('active');
             });
 
             // Append the card to the container
@@ -64,6 +64,7 @@ async function fetchAndDisplayRecipes() {
         }
     });
 }
+
 
 // Call the function when the page loads
 window.onload = fetchAndDisplayRecipes();

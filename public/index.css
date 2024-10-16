@@ -46,13 +46,15 @@ main {
 }
 
 .recipes-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 20px;
-    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
 }
 
 .recipe-card {
+    width: 100%; /* Full width on small devices */
+    max-width: 48%; /* 48% width for a 2x2 grid */
     border: 1px solid #ccc;
     border-radius: 10px;
     overflow: hidden;
@@ -86,4 +88,3 @@ main {
 .recipe-card.active .recipe-details {
     display: block;
 }
-
