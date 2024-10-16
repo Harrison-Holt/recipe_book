@@ -45,46 +45,101 @@ main {
     padding: 25px;
 }
 
+/* Flexbox container for recipes */
 .recipes-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-around;
     gap: 20px;
+    padding: 20px 0;
 }
 
+/* Card styles */
 .recipe-card {
-    width: 100%; /* Full width on small devices */
-    max-width: 48%; /* 48% width for a 2x2 grid */
-    border: 1px solid #ccc;
-    border-radius: 10px;
+    width: 100%;
+    max-width: 45%; /* Ensure two cards per row */
+    background-color: white;
+    border-radius: 12px;
     overflow: hidden;
-    transition: transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for elevation */
+    transition: transform 0.3s, box-shadow 0.3s;
     cursor: pointer;
+    margin-bottom: 30px; /* Spacing between cards */
 }
 
 .recipe-card:hover {
-    transform: scale(1.05);
-}
-
-.recipe-details {
-    display: none;
-    padding: 10px;
+    transform: translateY(-10px); /* Elevate on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
 }
 
 .recipe-title {
     background-color: #f8f8f8;
     padding: 15px;
-    font-size: 18px;
+    font-size: 20px; /* Larger, more readable font */
     font-weight: bold;
     text-align: center;
+    text-transform: uppercase; /* Make title uppercase for emphasis */
+    color: #333; /* Darker text color */
+    border-bottom: 1px solid #ddd; /* Separate the title from the image */
 }
 
 .recipe-image {
     width: 100%;
-    height: 150px;
-    object-fit: cover;
+    height: 200px; /* Increased image height for better visual impact */
+    object-fit: cover; /* Ensure the image covers the card nicely */
+}
+
+.recipe-details {
+    padding: 15px;
+    display: none; /* Hide details by default */
+}
+
+.recipe-details p {
+    font-size: 16px; /* Larger font for better readability */
+    line-height: 1.5;
+    color: #555; /* Softer color for body text */
+}
+
+/* Styling for ingredients and summary inside the recipe card */
+.recipe-summary {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 15px;
+}
+
+/* Buttons for interaction */
+.btn {
+    border-radius: 25px;
+    font-size: 16px;
+    padding: 10px 20px;
+    text-transform: uppercase;
 }
 
 .recipe-card.active .recipe-details {
     display: block;
+}
+
+/* Modal Customization */
+.modal-body h5 {
+    margin-top: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.modal-body ol {
+    padding-left: 20px;
+}
+
+#add-to-recipe {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border-radius: 25px;
+    padding: 10px 25px;
+    text-transform: uppercase;
+}
+
+#add-to-recipe:hover {
+    background-color: #0056b3;
+    transition: background-color 0.3s;
 }

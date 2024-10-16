@@ -61,18 +61,24 @@ async function fetchAndDisplayRecipes() {
 // Function to display the recipe in the modal
 function displayRecipeInModal(recipe) {
     // Set the modal fields with the recipe data
-    document.getElementById('modal-recipe-title').textContent = recipe.title;
-    document.getElementById('modal-recipe-image').src = recipe.image;
+    document.getElementById('modal-recipe-title').textContent = recipe.title || 'No Title';
+    document.getElementById('modal-recipe-image').src = recipe.image || '';
+
+    // Check if nutrition information exists
+    const nutrition = recipe.nutrition || {};
+    const calories = nutrition.calories || 'N/A';
+    const protein = nutrition.protein || 'N/A';
+    const fat = nutrition.fat || 'N/A';
 
     // Construct the detailed summary for the modal
-    const summary = `${recipe.title} is a <b>${recipe.diets.join(", ")}</b> recipe with ${recipe.servings} servings. 
-        For <b>$${recipe.pricePerServing.toFixed(2)} per serving</b>, this recipe <b>covers ${recipe.healthScore}%</b> of your daily 
-        requirements of vitamins and minerals. One serving contains <b>${recipe.nutrition.calories} calories</b>, 
-        <b>${recipe.nutrition.protein}g of protein</b>, and <b>${recipe.nutrition.fat}g of fat</b>. It works well as a 
-        ${recipe.dishTypes.join(", ")}. Head to the store and pick up ${recipe.ingredients.map(i => i.name).join(", ")} to make it today. 
+    const summary = `${recipe.title || 'No Title'} is a <b>${(recipe.diets || []).join(", ")}</b> recipe with ${recipe.servings || 'N/A'} servings. 
+        For <b>$${(recipe.pricePerServing || 0).toFixed(2)} per serving</b>, this recipe <b>covers ${recipe.healthScore || 0}%</b> of your daily 
+        requirements of vitamins and minerals. One serving contains <b>${calories} calories</b>, 
+        <b>${protein}g of protein</b>, and <b>${fat}g of fat</b>. It works well as a 
+        ${(recipe.dishTypes || []).join(", ")}. Head to the store and pick up ${(recipe.extendedIngredients || []).map(i => i.name).join(", ")} to make it today. 
         From preparation to the plate, this recipe takes approximately <b>${recipe.readyInMinutes || "N/A"} minutes</b>. 
-        ${recipe.aggregateLikes} people have tried and liked this recipe.`;
-    
+        ${recipe.aggregateLikes || 0} people have tried and liked this recipe.`;
+
     document.getElementById('modal-recipe-summary').innerHTML = summary;
 
     // Set servings, preparation, and cooking time
@@ -94,7 +100,7 @@ function displayRecipeInModal(recipe) {
     }
 
     // Similar Recipes Links
-    const similarRecipesHTML = recipe.similarRecipes.map(r => `
+    const similarRecipesHTML = (recipe.similarRecipes || []).map(r => `
         <a href="${r.link}" target="_blank">${r.title}</a>
     `).join(", ");
     document.getElementById('modal-similar-recipes').innerHTML = similarRecipesHTML || 'No similar recipes available.';
@@ -103,6 +109,7 @@ function displayRecipeInModal(recipe) {
     const recipeModal = new bootstrap.Modal(document.getElementById('recipeModal'));
     recipeModal.show();
 }
+
 
 // Call the function when the page loads
 window.onload = fetchAndDisplayRecipes();
