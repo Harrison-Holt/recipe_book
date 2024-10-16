@@ -23,7 +23,6 @@ async function fetchDailyRecipe() {
         // Get the container element where recipes will be displayed
         const recipesContainer = document.getElementById('recipes-container');
         
-        // Check if the element exists to avoid the 'null' error
         if (!recipesContainer) {
             console.error("Error: 'recipes-container' element not found in the DOM.");
             return;
@@ -34,19 +33,17 @@ async function fetchDailyRecipe() {
         // Loop through each recipe and add it to the DOM
         recipes.forEach((recipe, index) => {
             const recipeElement = document.createElement('div');
-            recipeElement.classList.add('recipe');
+            recipeElement.classList.add('recipe', 'col-12', 'col-md-4', 'mb-4');
 
-            // Example of adding recipe title, image, and summary
             recipeElement.innerHTML = `
-                <h2>Recipe ${index + 1}: ${recipe.title}</h2>
-                <img src="${recipe.image}" alt="${recipe.title}" />
+                <h4>${recipe.title}</h4>
+                <img src="${recipe.image}" alt="${recipe.title}" class="img-fluid" />
                 <p>${recipe.summary}</p>
                 <p><strong>Servings:</strong> ${recipe.servings}</p>
                 <p><strong>Ready in:</strong> ${recipe.readyInMinutes} minutes</p>
-                <p><a href="${recipe.sourceUrl}" target="_blank">See full recipe</a></p>
+                <a href="${recipe.sourceUrl}" target="_blank" class="btn btn-primary">See Full Recipe</a>
             `;
 
-            // Append the recipe to the container
             recipesContainer.appendChild(recipeElement);
         });
 
@@ -56,7 +53,7 @@ async function fetchDailyRecipe() {
 }
 
 // Call the function when the page loads
-window.onload = fetchDailyRecipe;  // Make sure this is the correct function name
+window.onload = fetchDailyRecipe;
 
 
 // Function to display recipe cards in a Bootstrap grid
