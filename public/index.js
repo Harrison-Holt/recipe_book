@@ -1,3 +1,15 @@
+// Helper function to get the current timestamp in milliseconds
+function getCurrentTimestamp() {
+    return new Date().getTime();
+}
+
+// Helper function to check if 24 hours have passed
+function has24HoursPassed(lastFetchedTime) {
+    const currentTime = getCurrentTimestamp();
+    const oneDayInMs = 24 * 60 * 60 * 1000;
+    return currentTime - lastFetchedTime >= oneDayInMs;
+}
+
 // Function to fetch a single recipe
 async function fetchRecipe() {
     try {
@@ -21,6 +33,7 @@ async function fetchRecipe() {
     }
 }
 
+// Function to fetch and display 4 different recipes with caching
 async function fetchAndDisplayRecipes() {
     const container = document.getElementById('recipes-container');
     if (!container) {
@@ -28,14 +41,33 @@ async function fetchAndDisplayRecipes() {
         return;
     }
 
-    // Fetch 4 different recipes using Promise.all()
+    // Check if recipes are already stored in localStorage and if 24 hours have passed
+    const storedRecipes = JSON.parse(localStorage.getItem('dailyRecipes'));
+    const lastFetchedTime = localStorage.getItem('lastFetchedTime');
+
+    if (storedRecipes && lastFetchedTime && !has24HoursPassed(lastFetchedTime)) {
+        // Use the cached recipes
+        displayRecipes(storedRecipes);
+        return;
+    }
+
+    // Fetch new recipes and store them
     const promises = [fetchRecipe(), fetchRecipe(), fetchRecipe(), fetchRecipe()];
     const recipes = await Promise.all(promises);
 
-    // Clear previous content
-    container.innerHTML = '';
+    // Store the recipes in localStorage
+    localStorage.setItem('dailyRecipes', JSON.stringify(recipes));
+    localStorage.setItem('lastFetchedTime', getCurrentTimestamp());
 
-    // Display each recipe
+    // Display the new recipes
+    displayRecipes(recipes);
+}
+
+// Function to display recipes
+function displayRecipes(recipes) {
+    const container = document.getElementById('recipes-container');
+    container.innerHTML = ''; // Clear previous content
+
     recipes.forEach((recipe) => {
         if (recipe) {
             const card = document.createElement('div');
@@ -58,6 +90,7 @@ async function fetchAndDisplayRecipes() {
     });
 }
 
+// Function to display the recipe in the modal
 function displayRecipeInModal(recipe) {
     // Set the modal fields with the recipe data
     document.getElementById('modal-recipe-title').textContent = recipe.title || 'No Title';
@@ -104,7 +137,6 @@ function displayRecipeInModal(recipe) {
     recipeModal.show();
 }
 
-
 // Call the function when the page loads
 window.onload = fetchAndDisplayRecipes();
 
@@ -112,8 +144,6 @@ window.onload = fetchAndDisplayRecipes();
 document.getElementById('add-to-recipe').addEventListener('click', () => {
     alert('Recipe added to your collection!');
 });
-
-
 
 // Function to decode JWT and extract the payload
 function decodeJWT(token) {
@@ -177,3 +207,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Call restrict access function to check if the user is logged in
 restrictAccess();
+
