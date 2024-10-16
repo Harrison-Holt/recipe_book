@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="index.css">
-    <title>FlavorCraft Home</title>
+    <title>Explore Recipes - FlavorCraft</title>
 </head>
 <body>
     <header class="row d-flex flex-row justify-content-between align-items-center">
@@ -17,35 +17,27 @@
         </div>
     </header>
 
-    <main class="container-fluid min-vh-100 d-flex flex-column justify-content-around align-items-center">
-        <section class="row d-flex flex-row justify-content-around align-items-center">
+    <main class="container-fluid min-vh-100">
+        <!-- Search bar for exploring recipes -->
+        <section class="row mt-3">
+            <div class="col-12 text-center">
+                <h2>Explore Recipes</h2>
+                <form id="search-form" class="d-flex justify-content-center">
+                    <input type="text" id="recipe-search" class="form-control w-50" placeholder="Enter recipe name" aria-label="Search Recipes">
+                    <button class="btn btn-dark ms-2" type="submit">Search</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Section for master list of recipes -->
+        <section class="row d-flex flex-column justify-content-center align-items-center mt-4">
             <div class="col-12">
-                <h2>Welcome, <span id="username">Username</span>!</h2> <!-- Placeholder for the username -->
+                <h3 class="text-center">Master Recipe List</h3>
+                <div id="recipes-list" class="row row-cols-1 row-cols-md-3 g-4">
+                    <!-- Recipes will be dynamically injected here -->
+                </div>
             </div>
         </section>
-
-        <section class="row d-flex flex-row justify-content-between align-items-center gap-5">
-            <div class="col-5 Explore_Current_Recipes d-flex flex-column justify-content-around align-items-center">
-                <h3>Explore Current Recipes!</h3>
-                <a href="explore_recipes.html" class="btn btn-dark">Explore Recipes</a>
-            </div>
-            <div class="col-5 Create_Your_Own_Recipes d-flex flex-column justify-content-around align-items-center">
-                <h3>Create Your Own Recipes!</h3>
-                <a href="#" class="btn btn-dark">My Recipes</a>
-            </div>
-        </section>
-
-        <!-- Section for Daily Featured Recipes -->
-        <section class="row d-flex flex-row justify-content-around align-items-center">
-            <div class="col-12">
-                <h2>Daily Featured Recipes</h2>
-            </div>
-        </section>
-
-        <section class="row d-flex flex-row justify-content-around align-items-center" id="recipes-container">
-            <!-- Recipe cards will be dynamically inserted here -->
-        </section>
-        
     </main>
 
     <footer class="row">
@@ -91,10 +83,8 @@
         </div>
     </div>
 
-    <!-- Amazon Cognito Identity JS -->
-    <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@4.5.10/dist/amazon-cognito-identity.min.js"></script>
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="index.js"></script> 
+    <script src="explore_recipes.js"></script>
 </body>
 </html>
-
