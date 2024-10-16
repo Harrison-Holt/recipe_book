@@ -132,3 +132,39 @@ window.onload = fetchAndDisplayRecipes();
 document.getElementById('add-to-recipe').addEventListener('click', () => {
     alert('Recipe added to your collection!');
 });
+
+
+// Function to decode JWT and extract the payload
+function decodeJWT(token) {
+    try {
+        const payload = token.split('.')[1];
+        const decodedPayload = atob(payload);
+        return JSON.parse(decodedPayload);
+    } catch (error) {
+        console.error('Invalid token format', error);
+        return null;
+    }
+}
+
+// Function to check if token is expired
+function isTokenExpired(token) {
+    const decodedToken = decodeJWT(token);
+    if (!decodedToken) return true;  // If token can't be decoded, assume it's expired
+    const currentTime = Math.floor(Date.now() / 1000);  // Current time in seconds
+    return decodedToken.exp < currentTime;  // Check if token has expired
+}
+
+// Function to restrict page access
+function restrictAccess() {
+    const token = localStorage.getItem('access_token');
+    
+    if (!token || isTokenExpired(token)) {
+        // If no token or token is expired, redirect to login page
+        window.location.href = 'signin.html';
+    } else {
+        // Token is valid, display username
+        displayUsername();
+    }
+}
+
+restrictAccess(); 
