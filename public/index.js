@@ -1,25 +1,27 @@
 async function fetch_daily_recipes() {
-
     try {
         const response = await fetch('https://h1ynlo4u7d.execute-api.us-east-1.amazonaws.com/dev/daily-recipe', {
-            method: 'GET', 
+            method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             }
-        }); 
+        });
 
-        if(!response.ok) {
-            console.error(`Connection Error: ${response.status}`); 
-            return; 
+        if (!response.ok) {
+            console.error(`Connection Error: ${response.status} - ${response.statusText}`);
+            const errorData = await response.text();
+            console.error("Error response body:", errorData);
+            return;
         }
 
-        const data = await response.json(); 
-        console.log(data); 
+        const data = await response.json();
+        console.log(data);
 
-    } catch(error) {
-        console.error("Error sending data: ", error); 
+    } catch (error) {
+        console.error("Error sending data: ", error);
     }
 }
+
 
 
 // Function to decode JWT and extract the payload
