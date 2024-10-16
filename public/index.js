@@ -1,19 +1,7 @@
-
-import dotenv from 'dotenv'; 
-
-dotenv.config(); 
-
 async function fetch_daily_recipes() {
 
     try {
-        const response = await fetch('https://api.spoonacular.com/recipes/random', {
-            method: 'GET', 
-            headers: {
-                'Content-Type': 'application/json',
-                'API-KEY': `${process.env.API_KEY}`
-
-            }
-        }); 
+        const response = await fetch('https://49qhaumkh3.execute-api.us-east-1.amazonaws.com/prod'); 
 
         if(!response.ok) {
             console.log(`Connection Error: ${response.status}`); 
