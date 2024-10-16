@@ -1,10 +1,15 @@
 async function fetch_daily_recipes() {
 
     try {
-        const response = await fetch('https://h1ynlo4u7d.execute-api.us-east-1.amazonaws.com/dev/daily-recipe'); 
+        const response = await fetch('https://h1ynlo4u7d.execute-api.us-east-1.amazonaws.com/dev/daily-recipe', {
+            method: 'GET', 
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }); 
 
         if(!response.ok) {
-            console.log(`Connection Error: ${response.status}`); 
+            console.error(`Connection Error: ${response.status}`); 
             return; 
         }
 
