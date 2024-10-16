@@ -1,7 +1,7 @@
 async function fetch_daily_recipes() {
 
     try {
-        const response = await fetch('https://49qhaumkh3.execute-api.us-east-1.amazonaws.com/prod'); 
+        const response = await fetch('https://49qhaumkh3.execute-api.us-east-1.amazonaws.com/prod/'); 
 
         if(!response.ok) {
             console.log(`Connection Error: ${response.status}`); 
