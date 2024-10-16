@@ -15,10 +15,10 @@ async function fetchDailyRecipe() {
         }
 
         // Parse the JSON response
-        const data = await response.json();
+        const result = await response.json();
 
         // Access the recipes array from the returned data
-        const recipes = data.data;  // 'data' is the property where the 'recipes' array is stored
+        const recipes = result.data.recipes;  // 'recipes' is nested under 'data'
 
         // Display the recipes on the frontend (example of iterating and showing recipe titles)
         const recipesContainer = document.getElementById('recipes-container');  // Assume you have a div with this ID
@@ -29,11 +29,14 @@ async function fetchDailyRecipe() {
             const recipeElement = document.createElement('div');
             recipeElement.classList.add('recipe');
 
-            // Example of adding recipe title and image
+            // Example of adding recipe title, image, and summary
             recipeElement.innerHTML = `
                 <h2>Recipe ${index + 1}: ${recipe.title}</h2>
                 <img src="${recipe.image}" alt="${recipe.title}" />
                 <p>${recipe.summary}</p>
+                <p><strong>Servings:</strong> ${recipe.servings}</p>
+                <p><strong>Ready in:</strong> ${recipe.readyInMinutes} minutes</p>
+                <p><a href="${recipe.sourceUrl}" target="_blank">See full recipe</a></p>
             `;
 
             // Append the recipe to the container
