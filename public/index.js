@@ -179,17 +179,27 @@ function restrictAccess() {
 }
 
 // Display the username on the page
+// Display the username on the page
 function displayUsername() {
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem('access_token');  // Or 'id_token' if that's what you're using
     if (token) {
         const decodedToken = decodeJWT(token);
+        console.log('Decoded Token:', decodedToken);  // Log the entire decoded token to inspect
+
         if (decodedToken) {
-            const username = decodedToken['cognito:username'];  
-            console.log(username);
-            document.getElementById('username').textContent = username;
+            // Check common fields where username could be stored
+            const username = decodedToken['cognito:username'] || decodedToken['preferred_username'] || decodedToken['email'] || decodedToken['sub'];
+            
+            if (username) {
+                console.log('Username:', username);
+                document.getElementById('username').textContent = username;
+            } else {
+                console.error('Username not found in token');
+            }
         }
     }
 }
+
 
 // Logout functionality
 document.addEventListener('DOMContentLoaded', () => {
