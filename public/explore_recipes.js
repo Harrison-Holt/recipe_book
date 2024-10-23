@@ -161,10 +161,7 @@ function restrictAccess() {
     if (!token || isTokenExpired(token)) {
         // If no token or token is expired, redirect to login page
         window.location.href = 'signin.html';
-    } else {
-        // Token is valid, display username
-        displayUsername();
-    }
+    } 
 }
 
 restrictAccess(); 
