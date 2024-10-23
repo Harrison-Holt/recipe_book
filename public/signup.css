@@ -43,3 +43,7 @@ label {
     background-color: #fff;
     color: #000; 
 }
+
+li {
+    text-decoration: none;
+}
