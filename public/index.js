@@ -26,7 +26,8 @@ async function fetchRecipe() {
         }
 
         const data = await response.json();
-        return data.data.recipes[0];  // Assuming 'recipes' is an array and we're fetching one recipe
+        console.log(data); 
+        return data.data.recipes[0]; 
     } catch (error) {
         console.error('Error fetching recipe:', error);
         return null;
