@@ -82,9 +82,14 @@ document.getElementById('signup_form').addEventListener('submit', (event) => {
         }
 
         console.log('User signup successful:', result.user.getUsername());
-        // Show the confirmation form
+
+        // Alert user to check email
+        alert('Sign up successful! Please check your email for a confirmation code to activate your account.');
+
+        // Show the confirmation form and in-page message
         document.getElementById('signup_form').style.display = 'none';
         document.getElementById('confirmation_form').style.display = 'block';
+        document.getElementById('confirmation_message').style.display = 'block';
 
         // Store username for confirmation
         localStorage.setItem('username', username);
@@ -119,4 +124,3 @@ document.getElementById('confirmation_form').addEventListener('submit', (event) 
         window.location.href = 'signin.html';
     });
 });
-
