@@ -27,7 +27,7 @@ async function fetchRecipe() {
 
         const data = await response.json();
         console.log(data); 
-        return data.data.recipes[0]; 
+        return data.data.recipes[0]; // Assuming 'recipes' is an array and we're fetching one recipe
     } catch (error) {
         console.error('Error fetching recipe:', error);
         return null;
@@ -138,9 +138,6 @@ function displayRecipeInModal(recipe) {
     recipeModal.show();
 }
 
-// Call the function when the page loads
-window.onload = fetchAndDisplayRecipes();
-
 // Handle "Add to My Recipe" button click
 document.getElementById('add-to-recipe').addEventListener('click', () => {
     alert('Recipe added to your collection!');
@@ -180,7 +177,6 @@ function restrictAccess() {
 }
 
 // Display the username on the page
-// Display the username on the page
 function displayUsername() {
     const token = localStorage.getItem('access_token');  // Or 'id_token' if that's what you're using
     if (token) {
@@ -201,7 +197,6 @@ function displayUsername() {
     }
 }
 
-
 // Logout functionality
 document.addEventListener('DOMContentLoaded', () => {
     const logoutButton = document.getElementById('logout_button');
@@ -218,4 +213,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Call restrict access function to check if the user is logged in
 restrictAccess();
-fetchAndDisplayRecipes(); 
+
+// Call the function when the page loads to display recipes
+window.onload = fetchAndDisplayRecipes;
