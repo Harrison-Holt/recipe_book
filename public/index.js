@@ -218,4 +218,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Call restrict access function to check if the user is logged in
 restrictAccess();
-
+fetchAndDisplayRecipes(); 
