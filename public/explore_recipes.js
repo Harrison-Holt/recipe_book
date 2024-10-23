@@ -14,7 +14,7 @@ async function fetchRecipe() {
         }
 
         const data = await response.json();
-        return data.data.recipes[0];  // Assuming 'recipes' is an array and we're fetching one recipe
+        return data.data.recipes[0];  
     } catch (error) {
         console.error('Error fetching recipe:', error);
         return null;
@@ -29,8 +29,8 @@ async function fetchAndDisplayRecipes() {
         return;
     }
 
-    // Fetch 6 different recipes using Promise.all()
-    const promises = [fetchRecipe(), fetchRecipe(), fetchRecipe(), fetchRecipe(), fetchRecipe(), fetchRecipe()];
+    // Fetch 90 recipes concurrently using Promise.all()
+    const promises = Array.from({ length: 90 }, () => fetchRecipe());
     const recipes = await Promise.all(promises);
 
     // Clear previous content
