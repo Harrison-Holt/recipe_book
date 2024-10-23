@@ -17,18 +17,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const hasNoSpaces = /^[^\s]+$/.test(password); // No spaces
 
         // Update the DOM based on validation rules
-        document.getElementById('length').className = hasLength ? 'text-success' : 'text-danger';
-        document.getElementById('uppercase').className = hasUppercase ? 'text-success' : 'text-danger';
-        document.getElementById('lowercase').className = hasLowercase ? 'text-success' : 'text-danger';
-        document.getElementById('number').className = hasNumber ? 'text-success' : 'text-danger';
-        document.getElementById('special').className = hasSpecialChar ? 'text-success' : 'text-danger';
-        document.getElementById('spaces').className = hasNoSpaces ? 'text-success' : 'text-danger';
+        updateValidationStatus('length', hasLength);
+        updateValidationStatus('uppercase', hasUppercase);
+        updateValidationStatus('lowercase', hasLowercase);
+        updateValidationStatus('number', hasNumber);
+        updateValidationStatus('special', hasSpecialChar);
+        updateValidationStatus('spaces', hasNoSpaces);
 
         // Enable or disable submit button based on validation
         if (hasLength && hasUppercase && hasLowercase && hasNumber && hasSpecialChar && hasNoSpaces) {
             submitButton.disabled = false; // All requirements are met
         } else {
             submitButton.disabled = true; // Disable the button until all requirements are satisfied
+        }
+    }
+
+    // Helper function to update the status (X or checkmark) based on validation
+    function updateValidationStatus(elementId, isValid) {
+        const element = document.getElementById(elementId);
+        const statusIcon = element.querySelector('.status-icon');
+        if (isValid) {
+            element.className = 'text-success';
+            statusIcon.textContent = '✔️';
+        } else {
+            element.className = 'text-danger';
+            statusIcon.textContent = '❌';
         }
     }
 

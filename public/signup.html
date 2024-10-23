@@ -30,21 +30,21 @@
             
             <label for="password" class="form-label">Password</label>
             <input type="password" id="password" placeholder="Enter Password" class="form-control" required>
-            
+
             <!-- Password requirements -->
             <div id="password-requirements" class="mt-2">
                 <p>Password must include:</p>
                 <ul>
-                    <li id="length" class="text-danger">At least 8 characters</li>
-                    <li id="uppercase" class="text-danger">At least one uppercase letter</li>
-                    <li id="lowercase" class="text-danger">At least one lowercase letter</li>
-                    <li id="number" class="text-danger">At least one number</li>
-                    <li id="special" class="text-danger">At least one special character (!@#$%^&*)</li>
-                    <li id="spaces" class="text-danger">No spaces allowed</li>
+                    <li id="length" class="text-danger"><span class="status-icon">❌</span> At least 8 characters</li>
+                    <li id="uppercase" class="text-danger"><span class="status-icon">❌</span> At least one uppercase letter</li>
+                    <li id="lowercase" class="text-danger"><span class="status-icon">❌</span> At least one lowercase letter</li>
+                    <li id="number" class="text-danger"><span class="status-icon">❌</span> At least one number</li>
+                    <li id="special" class="text-danger"><span class="status-icon">❌</span> At least one special character (!@#$%^&*)</li>
+                    <li id="spaces" class="text-danger"><span class="status-icon">❌</span> No spaces allowed</li>
                 </ul>
             </div>
 
-            <button type="submit" id="submit_button" class="btn btn-dark mt-3">Sign Up</button>
+            <button type="submit" id="submit_button" class="btn btn-dark mt-3" disabled>Sign Up</button>
 
             <p class="mt-2">Already have an account? <a href="./signin.html">Login!</a></p>
 
@@ -64,8 +64,10 @@
             <p>&copy; 2024 FlavorCraft</p>
         </div>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@4.5.10/dist/amazon-cognito-identity.min.js"></script>
     <script src="signup.js"></script>
 </body>
 </html>
+
 
