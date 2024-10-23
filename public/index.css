@@ -6,7 +6,7 @@ header, footer {
     background-color: #ECEDEF;
 }
 
-main {
+body {
     background-image: url('https://flavor-craft.s3.amazonaws.com/kitchen_background_empty.jpg');
     background-position: center;
     background-size: cover;
