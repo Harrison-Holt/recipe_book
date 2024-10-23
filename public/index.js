@@ -26,8 +26,8 @@ async function fetchRecipe() {
         }
 
         const data = await response.json();
-        console.log(data); 
-        return data.data.recipes[0]; // Assuming 'recipes' is an array and we're fetching one recipe
+        console.log('Fetched data:', data); // Debugging: Log fetched data
+        return data.data.recipes ? data.data.recipes[0] : null; // Ensure that recipes exist in the response
     } catch (error) {
         console.error('Error fetching recipe:', error);
         return null;
@@ -47,7 +47,7 @@ async function fetchAndDisplayRecipes() {
     const lastFetchedTime = localStorage.getItem('lastFetchedTime');
 
     if (storedRecipes && lastFetchedTime && !has24HoursPassed(lastFetchedTime)) {
-        // Use the cached recipes
+        console.log('Using cached recipes'); // Debugging: Using cached recipes
         displayRecipes(storedRecipes);
         return;
     }
@@ -56,18 +56,30 @@ async function fetchAndDisplayRecipes() {
     const promises = [fetchRecipe(), fetchRecipe(), fetchRecipe(), fetchRecipe()];
     const recipes = await Promise.all(promises);
 
-    // Store the recipes in localStorage
-    localStorage.setItem('dailyRecipes', JSON.stringify(recipes));
-    localStorage.setItem('lastFetchedTime', getCurrentTimestamp());
+    console.log('Fetched recipes array:', recipes); // Debugging: Log fetched recipes
 
-    // Display the new recipes
-    displayRecipes(recipes);
+    // Ensure that we have valid recipes before storing and displaying
+    if (recipes && recipes.length > 0) {
+        // Store the recipes in localStorage
+        localStorage.setItem('dailyRecipes', JSON.stringify(recipes));
+        localStorage.setItem('lastFetchedTime', getCurrentTimestamp());
+
+        // Display the new recipes
+        displayRecipes(recipes);
+    } else {
+        console.error('No valid recipes fetched.');
+    }
 }
 
 // Function to display recipes
 function displayRecipes(recipes) {
     const container = document.getElementById('recipes-container');
     container.innerHTML = ''; // Clear previous content
+
+    if (!recipes || recipes.length === 0) {
+        container.innerHTML = '<p>No recipes found.</p>'; // Handle empty recipe list
+        return;
+    }
 
     recipes.forEach((recipe) => {
         if (recipe) {
