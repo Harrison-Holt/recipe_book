@@ -184,7 +184,7 @@ function displayUsername() {
     if (token) {
         const decodedToken = decodeJWT(token);
         if (decodedToken) {
-            const username = decodedToken['cognito:username'];  // Assuming 'cognito:username' contains the username
+            const username = decodedToken['cognito:username'];  
             console.log(username);
             document.getElementById('username').textContent = username;
         }
