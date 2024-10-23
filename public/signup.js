@@ -1,3 +1,41 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const passwordInput = document.getElementById('password');
+    const submitButton = document.getElementById('submit_button');
+
+    // Listen for input on the password field
+    passwordInput.addEventListener('input', validatePassword);
+    
+    function validatePassword() {
+        const password = passwordInput.value;
+
+        // Validation rules
+        const hasLength = password.length >= 8;
+        const hasUppercase = /[A-Z]/.test(password);
+        const hasLowercase = /[a-z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+        const hasSpecialChar = /[!@#$%^&*]/.test(password);
+        const hasNoSpaces = /^[^\s]+$/.test(password); // No spaces
+
+        // Update the DOM based on validation rules
+        document.getElementById('length').className = hasLength ? 'text-success' : 'text-danger';
+        document.getElementById('uppercase').className = hasUppercase ? 'text-success' : 'text-danger';
+        document.getElementById('lowercase').className = hasLowercase ? 'text-success' : 'text-danger';
+        document.getElementById('number').className = hasNumber ? 'text-success' : 'text-danger';
+        document.getElementById('special').className = hasSpecialChar ? 'text-success' : 'text-danger';
+        document.getElementById('spaces').className = hasNoSpaces ? 'text-success' : 'text-danger';
+
+        // Enable or disable submit button based on validation
+        if (hasLength && hasUppercase && hasLowercase && hasNumber && hasSpecialChar && hasNoSpaces) {
+            submitButton.disabled = false; // All requirements are met
+        } else {
+            submitButton.disabled = true; // Disable the button until all requirements are satisfied
+        }
+    }
+
+    // Initially disable the submit button until the password is valid
+    submitButton.disabled = true;
+});
+
 const poolData = {
     UserPoolId: 'us-east-1_DRWagBaO2', 
     ClientId: '3vh2b86tgs6kunsucf0lpmk27s' 
