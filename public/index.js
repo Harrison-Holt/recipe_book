@@ -188,7 +188,7 @@ function displayUsername() {
 
         if (decodedToken) {
             // Check common fields where username could be stored
-            const username = decodedToken['cognito:username'] || decodedToken['preferred_username'] || decodedToken['email'] || decodedToken['sub'];
+            const username = decodedToken['username'] || decodedToken['email'] || decodedToken['sub'];
             
             if (username) {
                 console.log('Username:', username);
