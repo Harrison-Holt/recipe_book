@@ -31,6 +31,19 @@
             <label for="password" class="form-label">Password</label>
             <input type="password" id="password" placeholder="Enter Password" class="form-control" required>
 
+
+            <div id="password-requirements" class="mt-2">
+                <p>Password must include:</p>
+                <ul>
+                    <li id="length" class="text-danger"><span class="status-icon">❌</span> At least 8 characters</li>
+                    <li id="uppercase" class="text-danger"><span class="status-icon">❌</span> At least one uppercase letter</li>
+                    <li id="lowercase" class="text-danger"><span class="status-icon">❌</span> At least one lowercase letter</li>
+                    <li id="number" class="text-danger"><span class="status-icon">❌</span> At least one number</li>
+                    <li id="special" class="text-danger"><span class="status-icon">❌</span> At least one special character (!@#$%^&*)</li>
+                    <li id="spaces" class="text-danger"><span class="status-icon">❌</span> No spaces allowed</li>
+                </ul>
+            </div>
+            
             <button type="submit" id="submit_button" class="btn btn-dark mt-3" disabled>Sign Up</button>
 
             <p class="mt-2">Already have an account? <a href="./signin.html">Login!</a></p>
