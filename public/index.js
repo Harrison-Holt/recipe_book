@@ -3,14 +3,14 @@ function getCurrentTimestamp() {
     return new Date().getTime();
 }
 
-// Helper function to check if 24 hours have passed
+// Helper function to check if 24 hours have passed since the last fetch
 function has24HoursPassed(lastFetchedTime) {
     const currentTime = getCurrentTimestamp();
     const oneDayInMs = 24 * 60 * 60 * 1000;
     return currentTime - lastFetchedTime >= oneDayInMs;
 }
 
-// Function to fetch a single recipe
+// Function to fetch a single recipe from the API
 async function fetchRecipe() {
     try {
         const response = await fetch('https://h1ynlo4u7d.execute-api.us-east-1.amazonaws.com/dev/daily-recipe', {
@@ -34,7 +34,7 @@ async function fetchRecipe() {
     }
 }
 
-// Function to fetch and display 4 different recipes with caching
+// Function to fetch and display 4 different recipes with caching for 24 hours
 async function fetchAndDisplayRecipes() {
     const container = document.getElementById('recipes-container');
     if (!container) {
@@ -52,26 +52,27 @@ async function fetchAndDisplayRecipes() {
         return;
     }
 
-    // Fetch new recipes and store them
+    // Fetch new recipes if 24 hours have passed or no cached data
     const promises = [fetchRecipe(), fetchRecipe(), fetchRecipe(), fetchRecipe()];
     const recipes = await Promise.all(promises);
 
     console.log('Fetched recipes array:', recipes); // Debugging: Log fetched recipes
 
     // Ensure that we have valid recipes before storing and displaying
-    if (recipes && recipes.length > 0) {
+    const validRecipes = recipes.filter(recipe => recipe !== null);
+    if (validRecipes.length > 0) {
         // Store the recipes in localStorage
-        localStorage.setItem('dailyRecipes', JSON.stringify(recipes));
+        localStorage.setItem('dailyRecipes', JSON.stringify(validRecipes));
         localStorage.setItem('lastFetchedTime', getCurrentTimestamp());
 
         // Display the new recipes
-        displayRecipes(recipes);
+        displayRecipes(validRecipes);
     } else {
         console.error('No valid recipes fetched.');
     }
 }
 
-// Function to display recipes
+// Function to display recipes in the HTML container
 function displayRecipes(recipes) {
     const container = document.getElementById('recipes-container');
     container.innerHTML = ''; // Clear previous content
@@ -81,6 +82,7 @@ function displayRecipes(recipes) {
         return;
     }
 
+    // Loop through each recipe and create a card for display
     recipes.forEach((recipe) => {
         if (recipe) {
             const card = document.createElement('div');
@@ -103,7 +105,7 @@ function displayRecipes(recipes) {
     });
 }
 
-// Function to display the recipe in the modal
+// Function to display the recipe details in a modal when clicked
 function displayRecipeInModal(recipe) {
     // Set the modal fields with the recipe data
     document.getElementById('modal-recipe-title').textContent = recipe.title || 'No Title';
@@ -126,7 +128,7 @@ function displayRecipeInModal(recipe) {
     document.getElementById('modal-preparation-time').textContent = `Preparation Time: ${recipe.preparationMinutes || 'N/A'} mins`;
     document.getElementById('modal-cooking-time').textContent = `Cooking Time: ${recipe.cookingMinutes || 'N/A'} mins`;
 
-    // Instructions
+    // Display instructions if available
     const instructionsElement = document.getElementById('modal-recipe-instructions');
     instructionsElement.innerHTML = ''; // Clear previous content
     if (recipe.analyzedInstructions && recipe.analyzedInstructions.length > 0) {
@@ -139,23 +141,23 @@ function displayRecipeInModal(recipe) {
         instructionsElement.innerHTML = '<li>No instructions available.</li>';
     }
 
-    // Similar Recipes Links (if available)
+    // Display similar recipes if available
     const similarRecipesHTML = (recipe.similarRecipes || []).map(r => `
         <a href="${r.link}" target="_blank">${r.title}</a>
     `).join(", ");
     document.getElementById('modal-similar-recipes').innerHTML = similarRecipesHTML || 'No similar recipes available.';
 
-    // Show the modal
+    // Show the modal using Bootstrap
     const recipeModal = new bootstrap.Modal(document.getElementById('recipeModal'));
     recipeModal.show();
 }
 
-// Handle "Add to My Recipe" button click
+// Handle "Add to My Recipe" button click (optional feature)
 document.getElementById('add-to-recipe').addEventListener('click', () => {
     alert('Recipe added to your collection!');
 });
 
-// Function to decode JWT and extract the payload
+// JWT decoding and validation functions
 function decodeJWT(token) {
     try {
         const payload = token.split('.')[1];
@@ -167,7 +169,7 @@ function decodeJWT(token) {
     }
 }
 
-// Function to check if token is expired
+// Function to check if JWT token is expired
 function isTokenExpired(token) {
     const decodedToken = decodeJWT(token);
     if (!decodedToken) return true;  // If token can't be decoded, assume it's expired
@@ -175,7 +177,7 @@ function isTokenExpired(token) {
     return decodedToken.exp < currentTime;  // Check if token has expired
 }
 
-// Function to restrict page access
+// Function to restrict page access based on token validity
 function restrictAccess() {
     const token = localStorage.getItem('access_token');
     
@@ -188,7 +190,7 @@ function restrictAccess() {
     }
 }
 
-// Display the username on the page
+// Display the username on the page if the token is valid
 function displayUsername() {
     const token = localStorage.getItem('access_token');  // Or 'id_token' if that's what you're using
     if (token) {
@@ -226,5 +228,5 @@ document.addEventListener('DOMContentLoaded', () => {
 // Call restrict access function to check if the user is logged in
 restrictAccess();
 
-// Call the function when the page loads to display recipes
+// Call the function when the page loads to fetch and display recipes
 window.onload = fetchAndDisplayRecipes;
