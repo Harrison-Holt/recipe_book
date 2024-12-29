@@ -3,7 +3,7 @@
     "amazon-cognito-identity-js": "^6.3.12",
     "aws-sdk": "^2.1691.0",
     "bcrypt": "^5.1.1",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.4.7",
     "mysql2": "^3.11.3"
   }
 }

@@ -1,14 +1,4 @@
-// Helper function to get the current timestamp in milliseconds
-function getCurrentTimestamp() {
-    return new Date().getTime();
-}
 
-// Helper function to check if 24 hours have passed since the last fetch
-function has24HoursPassed(lastFetchedTime) {
-    const currentTime = getCurrentTimestamp();
-    const oneDayInMs = 24 * 60 * 60 * 1000;
-    return currentTime - lastFetchedTime >= oneDayInMs;
-}
 
 // Function to fetch a single recipe from the API
 async function fetchRecipe() {
@@ -36,27 +26,15 @@ async function fetchRecipe() {
 
 // Function to fetch and display 4 different recipes with caching for 24 hours
 async function fetchAndDisplayRecipes() {
+
     const container = document.getElementById('recipes-container');
-    if (!container) {
-        console.error("Container element 'recipes-container' not found.");
-        return;
-    }
-
-    // Check if recipes are already stored in localStorage and if 24 hours have passed
-    const storedRecipes = JSON.parse(localStorage.getItem('dailyRecipes'));
-    const lastFetchedTime = localStorage.getItem('lastFetchedTime');
-
-    if (storedRecipes && lastFetchedTime && !has24HoursPassed(lastFetchedTime)) {
-        console.log('Using cached recipes'); // Debugging: Using cached recipes
-        displayRecipes(storedRecipes);
-        return;
-    }
+ 
 
     // Fetch new recipes if 24 hours have passed or no cached data
     const promises = [fetchRecipe(), fetchRecipe(), fetchRecipe(), fetchRecipe()];
     const recipes = await Promise.all(promises);
 
-    console.log('Fetched recipes array:', recipes); // Debugging: Log fetched recipes
+    console.log('Fetched recipes array:', recipes);
 
     // Ensure that we have valid recipes before storing and displaying
     const validRecipes = recipes.filter(recipe => recipe !== null);
