@@ -30,6 +30,7 @@ function render_cards(recipes) {
 
     recipes.forEach(recipes => {
         const card = document.createElement('div'); 
+        card.classList.add('card'); 
     card.innerHTML = `
     <img src="${recipes.image}>
     <h3>${recipes.title}</h3>
