@@ -38,3 +38,5 @@ function render_cards(recipes) {
     container.appendChild(card); 
     }); 
 }
+
+explore_recipes(); 
