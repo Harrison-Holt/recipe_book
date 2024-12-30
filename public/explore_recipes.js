@@ -12,7 +12,8 @@ async function explore_recipes() {
 
         const data = await response.json(); 
         console.log(data); 
-        console.log(data.recipes[0].title); 
+        const title = data.data.recipes[0].title; 
+        console.log(title); 
         return; 
     } catch(error) {
         console.error('Internal Server Error: ', error);
