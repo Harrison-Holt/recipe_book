@@ -29,15 +29,8 @@
             </div>
         </section>
 
-        <!-- Section for master list of recipes -->
-        <section class="row d-flex flex-column justify-content-center align-items-center mt-4">
-            <div class="col-12">
-                <h3 class="text-center">Master Recipe List</h3>
-                <div id="recipes-list" class="row row-cols-1 row-cols-md-3 g-4">
-                    <!-- Recipes will be dynamically injected here -->
-                </div>
-            </div>
-        </section>
+        <div id="recipes_section"></div>
+     
     </main>
 
     <footer class="row">
@@ -50,40 +43,7 @@
         </div>
     </footer>
 
-    <div class="modal fade" id="recipeModal" tabindex="-1" aria-labelledby="recipeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="recipeModalLabel">Recipe Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <h4 id="modal-recipe-title"></h4>
-                    <img id="modal-recipe-image" src="" alt="Recipe Image" class="img-fluid mb-3">
-                    
-                    <!-- Recipe Description -->
-                    <p id="modal-recipe-summary"></p>
-                    <p id="modal-recipe-servings" class="mb-1"><strong>Servings:</strong> </p>
-                    <p id="modal-preparation-time" class="mb-1"><strong>Preparation Time:</strong> </p>
-                    <p id="modal-cooking-time" class="mb-3"><strong>Cooking Time:</strong> </p>
-    
-                    <!-- Instructions Section -->
-                    <h5>Instructions:</h5>
-                    <ol id="modal-recipe-instructions"></ol>
-    
-                    <!-- Similar Recipes Links -->
-                    <h5>Similar Recipes:</h5>
-                    <p id="modal-similar-recipes"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="add-to-recipe">Add to My Recipe</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bootstrap JS -->
+        <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@4.5.10/dist/amazon-cognito-identity.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="explore_recipes.js"></script>

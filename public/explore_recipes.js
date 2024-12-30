@@ -14,10 +14,27 @@ async function explore_recipes() {
         console.log(data); 
         const title = data.data.recipes[0].title; 
         console.log(title); 
-        return; 
+
+        const recipes = data.data.recipes; 
+        render_cards(recipes); 
+        return data; 
     } catch(error) {
         console.error('Internal Server Error: ', error);
     }
 }
 
-explore_recipes(); 
+function render_cards(recipes) {
+
+    const container = document.getElementById('recipes_section'); 
+    container.innerHTML = ''; 
+
+    recipes.forEach(recipes => {
+        const card = document.createElement('div'); 
+    card.innerHTML = `
+    <img src="${recipes.image}>
+    <h3>${recipes.title}</h3>
+    <p>${recipes.summary}</p>`; 
+
+    container.appendChild(card); 
+    }); 
+}
