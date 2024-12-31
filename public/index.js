@@ -14,6 +14,8 @@ async function get_daily_recipes() {
         }
 
         const data = await response.json(); 
+        const recipes = data.data.recipes; 
+
         console.log(data); 
 
         return data; 
@@ -24,7 +26,22 @@ async function get_daily_recipes() {
 }
 
 get_daily_recipes(); 
-// Call restrict access function to check if the user is logged in
-restrictAccess();
 
 
+function render_daily_recipes(recipes) {
+
+    const recipes_container = document.getElementById('recipes_container'); 
+    recipes_container.innerHTML = ''; 
+
+    recipes.forEach(recipe => {
+        const card = document.createElement('div'); 
+        card.classList.add('card'); 
+
+        card.innerHTML = `
+        <img src=${recipe.image}>
+        <h3>${recipe.title}</h3>
+        <p>${recipe.summary}</p>`; 
+
+        recipes_container.appendChild(card); 
+    }); 
+}
