@@ -17,7 +17,7 @@ async function get_daily_recipes() {
         const recipes = data.data.recipes; 
 
         console.log(data); 
-
+        render_daily_recipes(recipes); 
         return data; 
 
     } catch(error) {
