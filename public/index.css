@@ -145,10 +145,11 @@ body {
 }
 
 #recipes_container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 columns */
-    gap: 16px; /* Space between cards */
-    justify-items: center; /* Center cards in their grid cells */
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping to next row */
+    gap: 16px;
+    overflow-x: auto; /* Horizontal scrolling if too many cards */
+    padding: 8px 0;
 }
 
 .card {
@@ -157,6 +158,7 @@ body {
     overflow: hidden;
     width: 300px;
     text-align: center;
+    flex-shrink: 0; /* Prevent cards from shrinking */
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
